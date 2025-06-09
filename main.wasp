@@ -1,0 +1,239 @@
+app CoverLetterGPT {
+  wasp: {
+    version: "^0.15.0"
+  },
+  title: "CoverLetterGPT",
+  head: [
+        "<meta charset=\"UTF-8\" />",
+        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />",
+        "<meta name=\"description\" content=\"Create Unique Cover Letters Based on Your Skills using GPT. Supercharge Your Job Search with Cover Letter GPT.\" />",
+        "<meta name=\"keywords\" content=\"cover letter, gpt, ai, job search, resume\" />",
+        "<meta name=\"author\" content=\"CoverLetterGPT\" />",
+        "<meta property=\"og:type\" content=\"website\" />",
+        "<meta property=\"og:url\" content=\"https://CoverLetterGPT.xyz\" />",
+        "<meta property=\"og:title\" content=\"CoverLetterGPT\" />",
+        "<meta property=\"og:description\" content=\"Create Unique Cover Letters Based on Your Skills using GPT. Supercharge Your Job Search with Cover Letter GPT.\" />",
+        "<meta property=\"og:image\" content=\"https://CoverLetterGPT.xyz/homepage.png\" />",
+        "<meta name=\"twitter:image\" content=\"https://CoverLetterGPT.xyz/homepage.png\" />",
+        "<meta name=\"twitter:image:width\" content=\"800\" />",
+        "<meta name=\"twitter:image:height\" content=\"400\" />",
+        "<meta name=\"twitter:card\" content=\"summary_large_image\" />",
+  ],
+  // 🔐 Auth out of the box! https://wasp-lang.dev/docs/language/features#authentication--authorization
+  auth: {
+    userEntity: User,
+    methods: {
+      google: {
+        userSignupFields: import { getUserFields } from "@src/server/auth.ts",
+        configFn: import { config } from "@src/server/auth.ts",
+      },
+    },
+    onAuthFailedRedirectTo: "/",
+  },
+  client: {
+    rootComponent: import App from "@src/client/App",
+    setupFn: import clientSetup from "@src/client/clientSetup"
+  },
+  emailSender: {
+    provider: SendGrid,
+    defaultFrom: {
+      name: "CoverLetterGPT",
+      email: "vince@wasp-lang.dev",
+    },
+  },
+}
+
+/* 📡 These are the Wasp Routes (You can protect them easily w/ 'authRequired: true');
+ * https://wasp-lang.dev/docs/language/features#route
+ */
+
+route RootRoute { path: "/", to: MainPage }
+page MainPage {
+  component: import Main from "@src/client/MainPage"
+}
+
+route CoverLetterPage { path: "/cover-letter/:id", to: CoverLetterPage }
+page CoverLetterPage {
+  authRequired: true,
+  component: import CoverLetter from "@src/client/CoverLetterPage"
+}
+
+route LoginRoute { path: "/login", to: LoginPage }
+page LoginPage {
+  component: import Login from "@src/client/LoginPage"
+}
+
+route JobsRoute { path: "/jobs", to: JobsPage }
+page JobsPage {
+  authRequired: true,
+  component: import Jobs from "@src/client/JobsPage"
+}
+
+route ProfileRoute { path: "/profile", to: ProfilePage }
+page ProfilePage {
+  authRequired: true,
+  component: import Profile from "@src/client/ProfilePage"
+}
+
+route CheckoutRoute { path: "/checkout", to: CheckoutPage }
+page CheckoutPage {
+  authRequired: true,
+  component: import Checkout from "@src/client/CheckoutPage"
+}
+
+route TosRoute { path: "/tos", to: TosPage }
+page TosPage {
+  component: import Tos from "@src/client/legal/TosPage"
+} 
+
+route PrivacyRoute { path: "/privacy", to: PrivacyPage }
+page PrivacyPage {
+  component: import Privacy from "@src/client/legal/PrivacyPolicyPage"
+}
+
+/* ⛑ These are the Wasp Operations, which allow the client and server to interact:
+ * https://wasp-lang.dev/docs/language/features#queries-and-actions-aka-operations
+ */
+
+// 📝 Actions aka Mutations
+
+action generateCoverLetter {
+  fn: import { generateCoverLetter } from "@src/server/actions.js",
+  entities: [CoverLetter, User, LnPayment]
+}
+
+action createJob {
+  fn: import { createJob } from "@src/server/actions.js",
+  entities: [Job]
+}
+
+action updateJob {
+  fn: import { updateJob } from "@src/server/actions.js",
+  entities: [Job]
+}
+
+action updateCoverLetter {
+  fn: import { updateCoverLetter } from "@src/server/actions.js",
+  entities: [Job, CoverLetter, User, LnPayment]
+}
+
+action generateEdit {
+  fn: import { generateEdit } from "@src/server/actions.js",
+  entities: [CoverLetter, User, LnPayment]
+}
+
+action editCoverLetter {
+  fn: import { editCoverLetter } from "@src/server/actions.js",
+  entities: [CoverLetter]
+}
+
+action updateUser {
+  fn: import { updateUser } from "@src/server/actions.js",
+  entities: [User]
+}
+
+action deleteJob {
+  fn: import { deleteJob } from "@src/server/actions.js",
+  entities: [Job]
+}
+
+action stripePayment {
+  fn: import { stripePayment } from "@src/server/actions.js",
+  entities: [User]
+}
+
+action stripeGpt4Payment {
+  fn: import { stripeGpt4Payment } from "@src/server/actions.js",
+  entities: [User]
+}
+
+action stripeCreditsPayment {
+  fn: import { stripeCreditsPayment } from "@src/server/actions.js",
+  entities: [User]
+}
+
+action getLnLoginUrl {
+  fn: import { getLnLoginUrl } from "@src/server/ln.js",
+  entities: [User, LnData]
+}
+
+action decodeInvoice {
+  fn: import { decodeInvoice } from "@src/server/ln.js",
+}
+
+action updateLnPayment {
+  fn: import { updateLnPayment } from "@src/server/ln.js",
+  entities: [LnPayment]
+}
+
+action milliSatsToCents {
+  fn: import { milliSatsToCents } from "@src/server/ln.js",
+}
+
+// 📚 Queries
+
+query getJobs {
+  fn: import { getJobs } from "@src/server/queries.js",
+  entities: [Job]
+}
+
+query getJob {
+  fn: import { getJob } from "@src/server/queries.js",
+  entities: [Job]
+}
+
+query getCoverLetter {
+  fn: import { getCoverLetter } from "@src/server/queries.js",
+  entities: [CoverLetter]
+}
+
+query getCoverLetters {
+  fn: import { getCoverLetters } from "@src/server/queries.js",
+  entities: [CoverLetter]
+}
+
+query getUserInfo {
+  fn: import { getUserInfo } from "@src/server/queries.js",
+  entities: [User]
+}
+
+query getLnUserInfo {
+  fn: import { getLnUserInfo } from "@src/server/ln.js",
+  entities: [User, LnData]
+}
+
+query getCoverLetterCount {
+  fn: import { getCoverLetterCount } from "@src/server/queries.js",
+  entities: [CoverLetter]
+}
+
+/* 📡 These are custom Wasp API Endpoints. Use them for callbacks, webhooks, etc.
+ * https://wasp-lang.dev/docs/language/features#apis
+ */ 
+
+api stripeWebhook {
+  fn: import { stripeWebhook } from "@src/server/webhooks.js",
+  entities: [User],
+  httpRoute: (POST, "/stripe-webhook")
+}
+
+api lnLogin {
+  fn: import { lnLogin } from "@src/server/ln.js",
+  entities: [User, LnData],
+  httpRoute: (GET, "/ln-login")
+}
+
+/* 🕵️‍♂️ These are the Wasp Cron Jobs. Use them to set up recurring tasks or queues:
+ * https://wasp-lang.dev/docs/language/features#jobs
+ */
+
+job checkUserSubscription {
+  executor: PgBoss,
+  perform: {
+    fn: import { updateUserSubscription } from "@src/server/workers/updateUserSubscription.js"
+  },
+  schedule: {
+    cron: "0 23 * * *" 
+  },
+  entities: [User]
+}
