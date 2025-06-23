@@ -9,6 +9,7 @@ import {
   useQuery,
   getJob,
   getCoverLetterCount,
+  optimizeResume
 } from "wasp/client/operations";
 
 import {
@@ -237,9 +238,11 @@ function MainPage() {
 
       const creativityValue = convertToSliderValue(sliderValue);
 
-      const payload = {
+      const coverLetterPayload = {
         jobId: job.id,
         title: job.title,
+        company: job.company,
+        location: job.location,
         content: values.pdf,
         description: job.description,
         isCompleteCoverLetter,
@@ -249,11 +252,23 @@ function MainPage() {
         lnPayment: lnPayment || undefined,
       };
 
+      const resumePayload = {
+        resume: values.pdf,
+        jobDescription: job.description,
+        gptModel: values.gptModel || 'gpt-4o-mini',
+        lnPayment: lnPayment || undefined,
+      };
+
       setLoadingText();
 
-      const coverLetter = await generateCoverLetter(payload);
+      // Run both in parallel
+      const [coverLetter, optimizedResume] = await Promise.all([
+        generateCoverLetter(coverLetterPayload),
+        optimizeResume(resumePayload),
+      ]);
 
-      navigate(`/cover-letter/${coverLetter.id}`);
+      // Pass both IDs to the next page
+      navigate(`/cover-letter/${coverLetter.id}?optimizedResumeId=${optimizedResume.id}`);
     } catch (error: any) {
       cancelLoadingText();
       alert(`${error?.message ?? 'Something went wrong, please try again'}`);
@@ -365,7 +380,7 @@ function MainPage() {
         _hover={{ bgColor: 'bg-contrast-xs' }}
         transition='0.1s ease-in-out'
       >
-        <Text fontSize='md'>{coverLetterCount?.toLocaleString()} Cover Letters Generated! 🎉</Text>
+        <Text fontSize='md'>{coverLetterCount?.toLocaleString()} Resume and Cover Letters Generated! 🎉</Text>
       </Box>
       <BorderBox>
         <form
@@ -615,7 +630,7 @@ function MainPage() {
                   disabled={user === null}
                   type='submit'
                 >
-                  {!isCoverLetterUpdate ? 'Generate Cover Letter' : 'Create New Cover Letter'}
+                  {!isCoverLetterUpdate ? 'Generate Resume and Cover Letter' : 'Create Resume and Cover Letter'}
                 </Button>
                 <Text ref={loadingTextRef} fontSize='sm' fontStyle='italic' color='text-contrast-md'>
                   {' '}

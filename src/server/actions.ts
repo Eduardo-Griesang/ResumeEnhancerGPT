@@ -1,4 +1,4 @@
-import { type Job, type CoverLetter, type User, type LnPayment } from "wasp/entities";
+import { type Job, type CoverLetter, type User, type LnPayment, type OptimizedResume } from "wasp/entities";
 import { HttpError } from "wasp/server";
 import {
   type GenerateCoverLetter,
@@ -12,6 +12,7 @@ import {
   type StripePayment,
   type StripeGpt4Payment,
   type StripeCreditsPayment,
+  type OptimizeResume
 } from "wasp/server/operations";
 import fetch from 'node-fetch';
 import Stripe from 'stripe';
@@ -27,20 +28,33 @@ const gptConfig = {
 You will be given a job description along with the job applicant's resume.
 You will write a cover letter for the applicant that matches their past experiences from the resume with the job description. Write the cover letter in the same language as the job description provided!
 Rather than simply outlining the applicant's past experiences, you will give more detail and explain how those experiences will help the applicant succeed in the new job.
+Make it 3 to 4 paragraphs, the first one mainly talking about why the person would be a great fit for the company, the second one and maybe third about how the previous experience alligns with the company,
+and the final one about final thoughts. Do not add a date to the Cover Letter.
 You will write the cover letter in a modern, professional style without being too formal, as a modern employee might do naturally.`,
   coverLetterWithAWittyRemark: `You are a cover letter generator.
 You will be given a job description along with the job applicant's resume.
 You will write a cover letter for the applicant that matches their past experiences from the resume with the job description. Write the cover letter in the same language as the job description provided!
 Rather than simply outlining the applicant's past experiences, you will give more detail and explain how those experiences will help the applicant succeed in the new job.
+Make it 3 to 4 paragraphs, the first one mainly talking about why the person would be a great fit for the company, the second one and maybe third about how the previous experience alligns with the company,
+and the final one about final thoughts. Do not add a date to the Cover Letter.
 You will write the cover letter in a modern, relaxed style, as a modern employee might do naturally.
 Include a job related joke at the end of the cover letter.`,
   ideasForCoverLetter:
     "You are a cover letter idea generator. You will be given a job description along with the job applicant's resume. You will generate a bullet point list of ideas for the applicant to use in their cover letter. ",
 };
 
+type OptimizeResumePayload = {
+  resume: string;
+  jobDescription: string;
+  gptModel: string;
+  lnPayment?: LnPayment;
+};
+
 type CoverLetterPayload = Pick<CoverLetter, 'title' | 'jobId'> & {
   content: string;
   description: string;
+  company: string;
+  location: string;
   isCompleteCoverLetter: boolean;
   includeWittyRemark: boolean;
   temperature: number;
@@ -96,8 +110,76 @@ async function checkIfUserPaid({ context, lnPayment }: { context: any; lnPayment
   }
 }
 
+export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResume> = async (
+  { resume, jobDescription, lnPayment, gptModel },
+  context
+) => {
+  if (!context.user) {
+    throw new HttpError(401);
+  }
+  await checkIfUserPaid({ context, lnPayment });
+
+  const prompt = `You are a resume optimizer. Given a resume and a job description, rewrite the resume to better match the job description, 
+    especially by aligning keywords and skills from the Summary and Skills section, also make sure that the resume alligns with the job title. 
+    Only return the optimized resume text, do NOT add any thoughts on the end of the resume response.`;
+
+  const payload = {
+    model: gptModel,
+    messages: [
+      { role: 'system', content: prompt },
+      { role: 'user', content: `Resume: ${resume}\nJob Description: ${jobDescription}` }
+    ],
+    temperature: 0.5,
+  };
+
+  try {
+    if (!context.user.hasPaid && !context.user.credits && !context.user.isUsingLn) {
+      throw new HttpError(402, 'User has not paid or is out of credits');
+    } else if (context.user.credits && !context.user.hasPaid) {
+      await context.entities.User.update({
+        where: { id: context.user.id },
+        data: { credits: { decrement: 1 } },
+      });
+    }
+
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY!}`,
+      },
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+
+    const json : any = await response.json();
+    if (json?.error) throw new HttpError(500, json?.error?.message || 'Something went wrong');
+
+    const optimizedResume = json?.choices?.[0]?.message?.content;
+    if (!optimizedResume) throw new HttpError(500, 'GPT returned an empty response');
+
+    return await context.entities.OptimizedResume.create({
+      data: {
+        content: optimizedResume,
+        originalResume: resume,
+        jobDescription,
+        createdAt: new Date(),
+        user: { connect: { id: context.user.id } },
+      },
+    });
+  } catch (error: any) {
+    if (!context.user.hasPaid && error?.statusCode != 402) {
+      await context.entities.User.update({
+        where: { id: context.user.id },
+        data: { credits: { increment: 1 } },
+      });
+    }
+    console.error(error);
+    throw new HttpError(error.statusCode || 500, error.message || 'Something went wrong');
+  }
+};
+
 export const generateCoverLetter: GenerateCoverLetter<CoverLetterPayload, CoverLetter> = async (
-  { jobId, title, content, description, isCompleteCoverLetter, includeWittyRemark, temperature, gptModel, lnPayment },
+  { jobId, title, company, location, content, description, isCompleteCoverLetter, includeWittyRemark, temperature, gptModel, lnPayment },
   context
 ) => {
   if (!context.user) {
@@ -112,7 +194,7 @@ export const generateCoverLetter: GenerateCoverLetter<CoverLetterPayload, CoverL
     command = gptConfig.ideasForCoverLetter;
   }
 
-  console.log(' gpt model: ', gptModel);
+  console.log(' gpt model: ', gptModel, title, company, location);
 
   const payload = {
     model: gptModel,
@@ -123,7 +205,11 @@ export const generateCoverLetter: GenerateCoverLetter<CoverLetterPayload, CoverL
       },
       {
         role: 'user',
-        content: `My Resume: ${content}. Job title: ${title} Job Description: ${description}.`,
+        content: `My Resume: ${content}.
+          Job title: ${title}
+          Company: ${company}
+          Location: ${location}
+          Job Description: ${description}`,
       },
     ],
     temperature,
@@ -334,6 +420,8 @@ export const updateCoverLetter: UpdateCoverLetter<UpdateCoverLetterPayload, stri
     {
       jobId: id,
       title: job.title,
+      company: job.company,
+      location: job.location,
       content,
       description: job.description,
       isCompleteCoverLetter,

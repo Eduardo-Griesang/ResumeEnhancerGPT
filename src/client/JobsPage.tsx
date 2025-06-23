@@ -71,6 +71,13 @@ function JobsPage({ user }: { user: User }) {
     }
   };
 
+  const resumeHandler = (job: Job) => {
+    if (job) {
+      setJobId(job.id);
+      onOpen();
+    }
+  };
+
   const checkboxHandler = async (e: any, job: Job) => {
     try {
       const payload = {
@@ -153,10 +160,10 @@ function JobsPage({ user }: { user: User }) {
                       </HStack>
                       <HStack py={1} justify='space-between'>
                         <Button onClick={() => coverLetterHandler(job)} size='sm'>
-                          Display Cover Letters
+                          Display Cover Letter
                         </Button>
-                        <Button colorScheme='purple' onClick={() => updateCoverLetterHandler(job.id)} size='sm'>
-                          Create Additional Cover Letter
+                        <Button colorScheme='purple' onClick={() => resumeHandler(job)} size='sm'>
+                          Display Resume
                         </Button>
                       </HStack>
                     </VStack>

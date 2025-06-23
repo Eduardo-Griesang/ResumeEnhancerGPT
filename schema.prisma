@@ -85,3 +85,14 @@ model Job {
   updatedAt   DateTime      @updatedAt
   isCompleted Boolean       @default(false)
 }
+
+model OptimizedResume {
+  id              String   @id @default(uuid())
+  content         String
+  originalResume  String
+  jobDescription  String
+  createdAt       DateTime @default(now())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          Int
+}
+

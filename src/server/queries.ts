@@ -1,4 +1,4 @@
-import { type CoverLetter, type Job, type User } from "wasp/entities";
+import { type CoverLetter, type Job, type User, type OptimizedResume } from "wasp/entities";
 import { HttpError } from "wasp/server";
 import {
   type GetCoverLetter,
@@ -6,6 +6,7 @@ import {
   type GetJob,
   type GetUserInfo,
   type GetCoverLetterCount,
+  type GetOptimizedResume
 } from "wasp/server/operations";
 
 export const getCoverLetter: GetCoverLetter<Pick<CoverLetter, 'id'> , CoverLetter> = async ({ id }, context) => {
@@ -19,6 +20,21 @@ export const getCoverLetter: GetCoverLetter<Pick<CoverLetter, 'id'> , CoverLette
       user: { id: context.user.id },
     },
   });
+};
+
+export const getOptimizedResume = async ({ id }: { id: string | null }, context: any) => {
+  if (!context.user) {
+    throw new HttpError(401);
+  }
+
+  const resume = await context.entities.OptimizedResume.findFirst({
+    where: {
+      id: id || undefined,
+      userId: context.user.id
+    }
+  });
+
+  return resume;
 };
 
 type GetCoverLetterArgs = {

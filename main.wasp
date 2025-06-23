@@ -1,8 +1,8 @@
-app CoverLetterGPT {
+app ResumeEnhancerGPT {
   wasp: {
     version: "^0.15.0"
   },
-  title: "CoverLetterGPT",
+  title: "ResumeEnhancerGPT",
   head: [
         "<meta charset=\"UTF-8\" />",
         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />",
@@ -37,7 +37,7 @@ app CoverLetterGPT {
   emailSender: {
     provider: SendGrid,
     defaultFrom: {
-      name: "CoverLetterGPT",
+      name: "ResumeEnhancerGPT",
       email: "vince@wasp-lang.dev",
     },
   },
@@ -110,6 +110,16 @@ action createJob {
 action updateJob {
   fn: import { updateJob } from "@src/server/actions.js",
   entities: [Job]
+}
+
+action optimizeResume {
+  fn: import { optimizeResume } from "@src/server/actions.js",
+  entities: [User, LnPayment, OptimizedResume]
+}
+
+query getOptimizedResume {
+  fn: import { getOptimizedResume } from "@src/server/queries.js",
+  entities: [OptimizedResume]
 }
 
 action updateCoverLetter {
