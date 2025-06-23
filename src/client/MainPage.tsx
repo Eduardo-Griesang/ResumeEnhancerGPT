@@ -254,6 +254,7 @@ function MainPage() {
 
       const resumePayload = {
         resume: values.pdf,
+        jobId: job.id,
         jobDescription: job.description,
         gptModel: values.gptModel || 'gpt-4o-mini',
         lnPayment: lnPayment || undefined,

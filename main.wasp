@@ -117,11 +117,6 @@ action optimizeResume {
   entities: [User, LnPayment, OptimizedResume]
 }
 
-query getOptimizedResume {
-  fn: import { getOptimizedResume } from "@src/server/queries.js",
-  entities: [OptimizedResume]
-}
-
 action updateCoverLetter {
   fn: import { updateCoverLetter } from "@src/server/actions.js",
   entities: [Job, CoverLetter, User, LnPayment]
@@ -190,6 +185,16 @@ query getJobs {
 query getJob {
   fn: import { getJob } from "@src/server/queries.js",
   entities: [Job]
+}
+
+query getOptimizedResume {
+  fn: import { getOptimizedResume } from "@src/server/queries.js",
+  entities: [OptimizedResume]
+}
+
+query getOptimizedResumes {
+  fn: import { getOptimizedResumes } from "@src/server/queries.js",
+  entities: [OptimizedResume]
 }
 
 query getCoverLetter {

@@ -7,6 +7,8 @@ import {
   useQuery,
   getJobs,
   getCoverLetters,
+  getOptimizedResumes,
+  getOptimizedResume,
 } from "wasp/client/operations";
 
 import { useState, useEffect } from 'react';
@@ -37,6 +39,8 @@ import { FiDelete } from 'react-icons/fi';
 function JobsPage({ user }: { user: User }) {
   const [jobId, setJobId] = useState<string>('');
   const [descriptionText, setDescriptionText] = useState<string | null>(null);
+  const [resumeData, setResumeData] = useState(null);
+  const { isOpen: isResumeOpen, onOpen: onResumeOpen, onClose: onResumeClose } = useDisclosure();
 
   const navigate = useNavigate();
 
@@ -71,10 +75,12 @@ function JobsPage({ user }: { user: User }) {
     }
   };
 
-  const resumeHandler = (job: Job) => {
-    if (job) {
-      setJobId(job.id);
-      onOpen();
+  const resumeHandler = async (job: Job) => {
+    const resume = await getOptimizedResume({ id: job.id });
+    if (resume) {
+      // @ts-ignore
+      setResumeData([resume]);
+      onResumeOpen();
     }
   };
 
@@ -92,10 +98,6 @@ function JobsPage({ user }: { user: User }) {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const updateCoverLetterHandler = async (jobId: string) => {
-    navigate(`/?job=${jobId}`);
   };
 
   return (
@@ -184,6 +186,15 @@ function JobsPage({ user }: { user: User }) {
       )}
       {descriptionText && (
         <DescriptionModal description={descriptionText} isOpen={desIsOpen} onOpen={desOnOpen} onClose={desOnClose} />
+      )}
+      {resumeData && (
+        <ModalElement
+          coverLetterData={resumeData}
+          isOpen={isResumeOpen}
+          onOpen={onResumeOpen}
+          onClose={onResumeClose}
+          title="Your Resume"
+        />
       )}
       <DeleteJob jobId={jobId} isOpen={deleteIsOpen} onOpen={deleteOnOpen} onClose={deleteOnClose} />
     </VStack>

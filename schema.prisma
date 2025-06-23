@@ -24,6 +24,7 @@ model User {
   jobs                 Job[]
   lnData               LnData?
   lnPayments           LnPayment[]
+  optimizedResumes     OptimizedResume[]
 }
 
 model LnData {
@@ -84,6 +85,7 @@ model Job {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   isCompleted Boolean       @default(false)
+  optimizedResumes OptimizedResume[]
 }
 
 model OptimizedResume {
@@ -94,5 +96,7 @@ model OptimizedResume {
   createdAt       DateTime @default(now())
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          Int
+  job             Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId           String
 }
 

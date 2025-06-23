@@ -48,6 +48,7 @@ type OptimizeResumePayload = {
   jobDescription: string;
   gptModel: string;
   lnPayment?: LnPayment;
+  jobId: string;
 };
 
 type CoverLetterPayload = Pick<CoverLetter, 'title' | 'jobId'> & {
@@ -111,7 +112,7 @@ async function checkIfUserPaid({ context, lnPayment }: { context: any; lnPayment
 }
 
 export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResume> = async (
-  { resume, jobDescription, lnPayment, gptModel },
+  { resume, jobDescription, lnPayment, gptModel, jobId },
   context
 ) => {
   if (!context.user) {
@@ -164,6 +165,7 @@ export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResu
         jobDescription,
         createdAt: new Date(),
         user: { connect: { id: context.user.id } },
+        job: { connect: { id: jobId } }
       },
     });
   } catch (error: any) {

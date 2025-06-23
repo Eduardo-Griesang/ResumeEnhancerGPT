@@ -22,9 +22,10 @@ type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onOpen: () => void;
+  title?: string;
 };
 
-export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose }: ModalProps) {
+export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose, title }: ModalProps) {
   const [selectedCoverLetter, setSelectedCoverLetter] = useState<CoverLetter>(coverLetterData[0]);
 
   const { hasCopied, onCopy } = useClipboard(selectedCoverLetter.content);
@@ -50,7 +51,8 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose 
     <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={copyButtonRef}>
       <ModalOverlay backdropFilter='auto' backdropInvert='15%' backdropBlur='2px' />
       <ModalContent maxH='2xl' maxW='2xl' bgColor='bg-modal'>
-        <ModalHeader>Your Cover Letter{coverLetterData.length > 1 && 's'}</ModalHeader>
+        {title ? (<ModalHeader>Your Resume</ModalHeader>) 
+        : <ModalHeader>Your Cover Letter{coverLetterData.length > 1 && 's'}</ModalHeader>  }
         <ModalCloseButton />
         <ModalBody>
           {coverLetterData.length > 1 && (
@@ -92,7 +94,8 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose 
               Copy
             </Button>
           </Tooltip>
-          <Button
+          {!title ? (
+            <Button
             leftIcon={<AiOutlineEdit />}
             colorScheme='purple'
             variant='outline'
@@ -101,7 +104,10 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose 
             onClick={() => navigate(`/cover-letter/${selectedCoverLetter.id}`)}
           >
             Edit
-          </Button>
+          </Button>)
+          : <></>
+          }
+          
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -26,15 +26,29 @@ export const getOptimizedResume = async ({ id }: { id: string | null }, context:
   if (!context.user) {
     throw new HttpError(401);
   }
-
   const resume = await context.entities.OptimizedResume.findFirst({
     where: {
-      id: id || undefined,
+      jobId: id || undefined,
       userId: context.user.id
     }
   });
 
   return resume;
+};
+
+// @ts-ignore
+export const getOptimizedResumes = async ({ id }, context) => {
+  if (!context.user) {
+    throw new HttpError(401);
+  }
+
+  console.log('alou')
+  return context.entities.OptimizedResume.findMany({
+    where: {
+      job: { id },
+      user: { id: context.user.id },
+    },
+  });
 };
 
 type GetCoverLetterArgs = {
