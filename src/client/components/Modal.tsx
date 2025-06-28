@@ -51,7 +51,7 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose,
     <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={copyButtonRef}>
       <ModalOverlay backdropFilter='auto' backdropInvert='15%' backdropBlur='2px' />
       <ModalContent maxH='2xl' maxW='2xl' bgColor='bg-modal'>
-        {title ? (<ModalHeader>Your Resume</ModalHeader>) 
+        {title ? (<ModalHeader>Your Resume</ModalHeader>)
         : <ModalHeader>Your Cover Letter{coverLetterData.length > 1 && 's'}</ModalHeader>  }
         <ModalCloseButton />
         <ModalBody>

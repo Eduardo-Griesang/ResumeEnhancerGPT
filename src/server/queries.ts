@@ -28,7 +28,7 @@ export const getOptimizedResume = async ({ id }: { id: string | null }, context:
   }
   const resume = await context.entities.OptimizedResume.findFirst({
     where: {
-      jobId: id || undefined,
+      id,
       userId: context.user.id
     }
   });
@@ -42,10 +42,9 @@ export const getOptimizedResumes = async ({ id }, context) => {
     throw new HttpError(401);
   }
 
-  console.log('alou')
-  return context.entities.OptimizedResume.findMany({
+  return context.entities.OptimizedResume.findFirst({
     where: {
-      job: { id },
+      jobId: id || undefined,
       user: { id: context.user.id },
     },
   });

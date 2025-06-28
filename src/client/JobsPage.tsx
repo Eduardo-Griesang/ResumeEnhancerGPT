@@ -28,6 +28,7 @@ import {
   Divider,
   Checkbox,
   Spinner,
+  Stack,
 } from '@chakra-ui/react';
 import ModalElement from './components/Modal';
 import DescriptionModal from './components/DescriptionModal';
@@ -35,6 +36,7 @@ import BorderBox from './components/BorderBox';
 import { useNavigate } from 'react-router-dom';
 import { DeleteJob } from './components/AlertDialog';
 import { FiDelete } from 'react-icons/fi';
+import ResumeModal from "./components/ResumeModal";
 
 function JobsPage({ user }: { user: User }) {
   const [jobId, setJobId] = useState<string>('');
@@ -76,11 +78,14 @@ function JobsPage({ user }: { user: User }) {
   };
 
   const resumeHandler = async (job: Job) => {
-    const resume = await getOptimizedResume({ id: job.id });
-    if (resume) {
-      // @ts-ignore
-      setResumeData([resume]);
-      onResumeOpen();
+    const resume = await getOptimizedResumes({ id: job.id });
+    if (resume && resume.content) {
+      try {
+        setResumeData(JSON.parse(resume.content));
+        onResumeOpen();
+      } catch (e) {
+        setResumeData(null);
+      }
     }
   };
 
@@ -160,14 +165,20 @@ function JobsPage({ user }: { user: User }) {
                           Display
                         </Button>
                       </HStack>
-                      <HStack py={1} justify='space-between'>
-                        <Button onClick={() => coverLetterHandler(job)} size='sm'>
+                      <Stack
+                        py={1}
+                        spacing={2}
+                        direction={['column', 'row']}
+                        justify='space-between'
+                        width="100%"
+                      >
+                        <Button colorScheme='purple' onClick={() => coverLetterHandler(job)} size='sm'>
                           Display Cover Letter
                         </Button>
                         <Button colorScheme='purple' onClick={() => resumeHandler(job)} size='sm'>
                           Display Resume
                         </Button>
-                      </HStack>
+                      </Stack>
                     </VStack>
                   </AccordionPanel>
                 </AccordionItem>
@@ -188,12 +199,10 @@ function JobsPage({ user }: { user: User }) {
         <DescriptionModal description={descriptionText} isOpen={desIsOpen} onOpen={desOnOpen} onClose={desOnClose} />
       )}
       {resumeData && (
-        <ModalElement
-          coverLetterData={resumeData}
+        <ResumeModal
+          resume={resumeData}
           isOpen={isResumeOpen}
-          onOpen={onResumeOpen}
           onClose={onResumeClose}
-          title="Your Resume"
         />
       )}
       <DeleteJob jobId={jobId} isOpen={deleteIsOpen} onOpen={deleteOnOpen} onClose={deleteOnClose} />

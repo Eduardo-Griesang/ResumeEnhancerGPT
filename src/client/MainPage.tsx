@@ -332,7 +332,7 @@ function MainPage() {
 
   function setLoadingText() {
     setLoadingTextTimeout = setTimeout(() => {
-      loadingTextRef.current && (loadingTextRef.current.innerText = ' patience, my friend 🧘...');
+      loadingTextRef.current && (loadingTextRef.current.innerText = ' We are building everything...');
     }, 2000);
   }
 
@@ -499,7 +499,7 @@ function MainPage() {
                         Upload CV
                       </Button>
                     </FormLabel>
-                    {isPdfReady && <Text fontSize={'sm'}>👍 uploaded</Text>}
+                    {isPdfReady && <Text fontSize={'sm'}>Uploaded!</Text>}
                     <FormErrorMessage>{!!formErrors.pdf && formErrors.pdf.message?.toString()}</FormErrorMessage>
                   </HStack>
                   <FormHelperText mt={0.5} fontSize={'xs'}>

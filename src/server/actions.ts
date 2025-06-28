@@ -121,8 +121,36 @@ export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResu
   await checkIfUserPaid({ context, lnPayment });
 
   const prompt = `You are a resume optimizer. Given a resume and a job description, rewrite the resume to better match the job description, 
-    especially by aligning keywords and skills from the Summary and Skills section, also make sure that the resume alligns with the job title. 
-    Only return the optimized resume text, do NOT add any thoughts on the end of the resume response.`;
+    especially by aligning keywords and skills from the Summary and Skills section, still keep the skills from the original Resume 
+    unless they are completely unrelated to the job, and make sure that the resume aligns with the job title.
+  
+      Return ONLY a JSON object with the following structure, filling in all fields with the optimized content:
+
+      {
+        "name": "...",
+        "title": "...",
+        "location": "...",
+        "email": "...",
+        "summary": "...",
+        "skills": ["...", "..."],
+        "experience": [
+          {
+            "role": "...",
+            "company": "...",
+            "period": "...",
+            "description": "...",
+            "bullets": ["...", "..."]
+          }
+        ],
+        "education": {
+          "degree": "...",
+          "institution": "...",
+          "period": "...",
+          "details": "..."
+        }
+      }
+
+      Do not include any explanation or extra text, only the JSON.`;
 
   const payload = {
     model: gptModel,

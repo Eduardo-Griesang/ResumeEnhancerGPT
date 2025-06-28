@@ -115,7 +115,7 @@ function MobileButton({
   icon,
   isUser,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   icon: React.ReactElement;
   isUser?: boolean;
 }) {
@@ -124,7 +124,6 @@ function MobileButton({
       <MenuButton
         as={Button}
         aria-label={children as string}
-        leftIcon={icon}
         display={['block', 'none']}
         size='md'
         border='md'
@@ -133,8 +132,10 @@ function MobileButton({
           borderColor: 'rgba(255, 250, 240, 0.55)',
           transition: 'all 0.3s ease-in-out',
         }}
+        justifyContent="center"
+        alignItems="center"
       >
-        {children}
+        {icon}
       </MenuButton>
       <MenuList bgColor='gray.900'>
         {isUser ? (
