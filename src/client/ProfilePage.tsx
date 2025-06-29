@@ -81,7 +81,7 @@ export default function ProfilePage({ user }: { user: User }) {
               <HStack pt={3} textAlign='center'>
                 <Heading size='sm'>You have </Heading>
                 <Code>{userInfo?.credits ? userInfo.credits : '0'}</Code>
-                <Heading size='sm'>cover letter{userInfo?.credits === 1 ? '' : 's'} left</Heading>
+                <Heading size='sm'>resume{userInfo?.credits === 1 ? '' : 's'} and cover letter{userInfo?.credits === 1 ? '' : 's'} left</Heading>
               </HStack>
             )
           )}
@@ -112,7 +112,11 @@ export default function ProfilePage({ user }: { user: User }) {
                   </VStack> */}
                   <VStack layerStyle='card' py={5} px={7} gap={3} height='100%' width='100%' justifyContent='space-between' alignItems='center'>
                     <VStack gap={3} alignItems='start'>
-                      <Heading size='xl'>$2.95</Heading>
+                      <Heading size='xl'>Standard</Heading>
+                      <HStack gap={2} alignItems='baseline'>
+                        <Heading size='xl'>$5.99</Heading>
+                        <Text size='md'>/ month</Text>
+                      </HStack>
                       <Text textAlign='start' fontSize='md'>
                         Unlimited
                         <br />
@@ -120,21 +124,25 @@ export default function ProfilePage({ user }: { user: User }) {
                       </Text>
                       <Heading size='md'>Using GPT-4o-mini 🚀</Heading>
                     </VStack>
-                    <Button mr={3} isLoading={isLoading} onClick={handleBuy4oMini}>
-                      Buy Now!
+                    <Button mr={3} width='100%' isLoading={isLoading} onClick={handleBuy4oMini}>
+                      Choose Plan
                     </Button>
                   </VStack>
                   <VStack layerStyle='cardMd' borderColor={'purple.200'} borderWidth={3} py={5} px={7} gap={3} height='100%' width='100%' justifyContent='space-between' alignItems='center'>
-                    <VStack gap={3} alignItems='start'>
-                      <Heading size='xl'>$5.95</Heading>
+                    <VStack gap={3} alignItems='start' width="100%">
+                      <Heading size='xl'>Premium</Heading>
+                      <HStack gap={2} alignItems='baseline'>
+                        <Heading size='xl'>$7.99</Heading>
+                        <Text size='md'>/ month</Text>
+                      </HStack>
 
                       <Text textAlign='start' fontSize='md'>
                         Unlimited <br /> monthly subscription
                       </Text>
                       <Heading size='md'>Using GPT-4o 🤖</Heading>
                     </VStack>
-                    <Button colorScheme='purple' mr={3} isLoading={isGpt4loading} onClick={handleBuy4o}>
-                      💰 Buy Now!
+                    <Button colorScheme='purple' mr={3} width='100%' isLoading={isGpt4loading} onClick={handleBuy4o}>
+                      Choose Plan
                     </Button>
                   </VStack>
                 </HStack>

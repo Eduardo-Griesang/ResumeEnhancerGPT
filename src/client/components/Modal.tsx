@@ -16,6 +16,8 @@ import {
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineEdit } from 'react-icons/ai';
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import CoverLetterPdfDocument from "./CoverLetterPdfDocument";
 
 type ModalProps = {
   coverLetterData: CoverLetter[];
@@ -83,7 +85,7 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose,
           />
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter alignItems='baseline' gap={3}>
           <Tooltip
             label={hasCopied ? 'Copied!' : 'Copy Letter to Clipboard'}
             placement='top'
@@ -94,6 +96,16 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose,
               Copy
             </Button>
           </Tooltip>
+          <PDFDownloadLink
+            document={<CoverLetterPdfDocument coverLetter={selectedCoverLetter.content} />}
+            fileName={`CoverLetter.pdf`}
+          >
+            {({ loading }) => (
+              <Button colorScheme="purple" size="sm" mr={3}>
+                {loading ? 'Preparing PDF...' : 'Download as PDF'}
+              </Button>
+            )}
+          </PDFDownloadLink>
           {!title ? (
             <Button
             leftIcon={<AiOutlineEdit />}

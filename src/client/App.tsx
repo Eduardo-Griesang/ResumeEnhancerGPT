@@ -34,23 +34,27 @@ export default function App() {
 
     function handleMouseUp(event: any) {
       const selection = window.getSelection();
+      const textarea = document.getElementById('cover-letter-textarea');
+      setTooltip(null);
+      // @ts-ignore
+      if (textarea?.contains(selection?.anchorNode.childNodes[1])) {
+        if (selection?.toString() && location.pathname.includes('cover-letter')) {
+          // closes the tooltip when the user clicks a tooltip button
+          if (selection.toString() === currentText) {
+            setTooltip(null);
+            return;
+          }
+          setCurrentText(selection.toString());
+          // get the x and y coordinates of the mouse position
+          const x = event.clientX;
+          const y = event.clientY;
 
-      if (selection?.toString() && location.pathname.includes('cover-letter')) {
-        // closes the tooltip when the user clicks a tooltip button
-        if (selection.toString() === currentText) {
+          const text = selection.toString();
+
+          setTooltip({ x, y, text });
+        } else {
           setTooltip(null);
-          return;
         }
-        setCurrentText(selection.toString());
-        // get the x and y coordinates of the mouse position
-        const x = event.clientX;
-        const y = event.clientY;
-
-        const text = selection.toString();
-
-        setTooltip({ x, y, text });
-      } else {
-        setTooltip(null);
       }
     }
     function handleMouseDown() {

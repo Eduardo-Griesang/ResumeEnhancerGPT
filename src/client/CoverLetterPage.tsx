@@ -9,6 +9,7 @@ import { EditAlert } from './components/AlertDialog';
 import { useEffect, useState } from 'react';
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import ResumePdfDocument from "./components/ResumePdfDocument";
+import CoverLetterPdfDocument from "./components/CoverLetterPdfDocument";
 
 export default function CoverLetterPage() {
   const { textareaState, setTextareaState } = useContext(TextareaContext);
@@ -132,13 +133,16 @@ export default function CoverLetterPage() {
                 >
                   Save Changes
                 </Button>
-                <Button
-                  onClick={onCopyCoverLetter}
-                  colorScheme='purple'
-                  size="sm"
+                <PDFDownloadLink
+                  document={<CoverLetterPdfDocument coverLetter={textareaState} />}
+                  fileName={`CoverLetter.pdf`}
                 >
-                  {hasCopiedCoverLetter ? 'Copied!' : 'Copy'}
-                </Button>
+                  {({ loading }) => (
+                    <Button colorScheme="purple" size="sm">
+                      {loading ? 'Preparing PDF...' : 'Download as PDF'}
+                    </Button>
+                  )}
+                </PDFDownloadLink>
               </HStack>
             </VStack>
 

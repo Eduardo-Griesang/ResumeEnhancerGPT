@@ -121,8 +121,8 @@ export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResu
   await checkIfUserPaid({ context, lnPayment });
 
   const prompt = `You are a resume optimizer. Given a resume and a job description, rewrite the resume to better match the job description, 
-    especially by aligning keywords and skills from the Summary and Skills section, still keep the skills from the original Resume 
-    unless they are completely unrelated to the job, and make sure that the resume aligns with the job title.
+    especially by aligning keywords and skills from the Summary and Skills section, still keep the skills from the original Resume like  
+    technologies, languages, etc, unless they are completely unrelated to the job, and make sure that the resume aligns with the job title.
   
       Return ONLY a JSON object with the following structure, filling in all fields with the optimized content:
 
@@ -164,11 +164,6 @@ export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResu
   try {
     if (!context.user.hasPaid && !context.user.credits && !context.user.isUsingLn) {
       throw new HttpError(402, 'User has not paid or is out of credits');
-    } else if (context.user.credits && !context.user.hasPaid) {
-      await context.entities.User.update({
-        where: { id: context.user.id },
-        data: { credits: { decrement: 1 } },
-      });
     }
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -587,7 +582,7 @@ export const stripePayment: StripePayment<void, StripePaymentResult> = async (_a
     mode: 'subscription',
     success_url: `${DOMAIN}/checkout?success=true`,
     cancel_url: `${DOMAIN}/checkout?canceled=true`,
-    automatic_tax: { enabled: true },
+    automatic_tax: { enabled: false },
     customer_update: {
       address: 'auto',
     },
@@ -644,7 +639,7 @@ export const stripeGpt4Payment: StripeGpt4Payment<void, StripePaymentResult> = a
     mode: 'subscription',
     success_url: `${DOMAIN}/checkout?success=true`,
     cancel_url: `${DOMAIN}/checkout?canceled=true`,
-    automatic_tax: { enabled: true },
+    automatic_tax: { enabled: false },
     customer_update: {
       address: 'auto',
     },
@@ -701,7 +696,7 @@ export const stripeCreditsPayment: StripeCreditsPayment<void, StripePaymentResul
     mode: 'payment',
     success_url: `${DOMAIN}/checkout?credits=true`,
     cancel_url: `${DOMAIN}/checkout?canceled=true`,
-    automatic_tax: { enabled: true },
+    automatic_tax: { enabled: false },
     customer_update: {
       address: 'auto',
     },

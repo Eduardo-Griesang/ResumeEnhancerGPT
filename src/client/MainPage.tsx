@@ -381,7 +381,7 @@ function MainPage() {
         _hover={{ bgColor: 'bg-contrast-xs' }}
         transition='0.1s ease-in-out'
       >
-        <Text fontSize='md'>{coverLetterCount?.toLocaleString()} Resume and Cover Letters Generated! 🎉</Text>
+        <Text fontSize='md'>{coverLetterCount?.toLocaleString()} Resumes and Cover Letters Generated! 🎉</Text>
       </Box>
       <BorderBox>
         <form
