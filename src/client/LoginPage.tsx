@@ -79,7 +79,7 @@ export default function Login() {
             <a href={signInUrl}>
               <Button leftIcon={<AiOutlineGoogle />}>Google Sign In</Button>
             </a>
-            <Button isLoading={lnIsLoading} onClick={handleWalletClick} leftIcon={<BsCurrencyBitcoin />}>
+            <Button isLoading={lnIsLoading} onClick={handleWalletClick} leftIcon={<BsCurrencyBitcoin />} disabled>
               {' '}
               Lightning Sign In
             </Button>

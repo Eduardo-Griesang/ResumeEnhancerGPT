@@ -18,7 +18,7 @@ After cloning this repo, you can run it locally by following these steps:
 
 ## How it works
 
-[coverlettergpt.xyz](http://coverlettergpt.xyz) was built in a couple of days using a few really cool tools:
+[coverlettergpt.xyz](http://coverlettergpt.xyz) was built using a few really cool tools:
 
 - 🐝 [Wasp](https://wasp.sh) - allows you to build full-stack apps with 10x less boilerplate
 - 🎨 [Chakra-ui](https://chakra-ui.com/) - UI components for React that look good and are easy to work with
