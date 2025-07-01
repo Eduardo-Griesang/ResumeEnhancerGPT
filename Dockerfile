@@ -3,28 +3,22 @@ FROM node:20
 # Install curl and other dependencies
 RUN apt-get update && apt-get install -y curl
 
-# Install Wasp CLI
+# Install Wasp CLI and symlink to /usr/local/bin
 RUN curl -sSL https://get.wasp.sh/installer.sh | sh && \
-    ln -s /root/.wasp/bin/wasp /usr/local/bin/wasp
+    ln -s /root/.local/bin/wasp /usr/local/bin/wasp
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm ci
 
-# Copy the rest of the app
 COPY . .
 
-# Make sure Wasp is in PATH for all RUN/CMD
-ENV PATH="/root/.wasp/bin:${PATH}"
+# (Optional, but safe)
+ENV PATH="/root/.local/bin:${PATH}"
 
-# Build the app
 RUN wasp build
 
-# Expose the port Wasp uses
 EXPOSE 3001
 
-# Start the app
 CMD ["wasp", "start"]
