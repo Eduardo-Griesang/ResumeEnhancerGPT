@@ -1,2 +1,3 @@
 [phases.setup]
+nixPkgs = ["bash"]
 cmds = ["bash ./setup.sh"]
