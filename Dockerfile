@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y curl
 
 # Install Wasp CLI
 RUN curl -sSL https://get.wasp.sh/installer.sh | sh && \
-    echo 'export PATH="$HOME/.wasp/bin:$PATH"' >> /root/.bashrc
+    ln -s /root/.wasp/bin/wasp /usr/local/bin/wasp
 
 # Set working directory
 WORKDIR /app
