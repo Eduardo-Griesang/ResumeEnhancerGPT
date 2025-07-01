@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["bash", "curl", "nodejs", "npm"]
+nixPkgs = ["bash", "curl", "nodejs"]
 cmds = ["bash ./setup.sh"]
 
 [phases.build]
