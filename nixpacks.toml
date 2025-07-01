@@ -1,2 +1,5 @@
 [phases.setup]
 cmds = ["sh ./setup.sh"]
+
+[phases.build]
+env = { PATH = "$PATH:/root/.local/bin:$HOME/.wasp/bin" }
