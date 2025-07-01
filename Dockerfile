@@ -4,7 +4,7 @@ FROM node:20
 RUN apt-get update && apt-get install -y curl
 
 # Install Wasp CLI
-RUN curl -sSL https://get.wasp-lang.dev/installer.sh | sh && \
+RUN curl -sSL https://get.wasp.sh/installer.sh | sh && \
     echo 'export PATH="$HOME/.wasp/bin:$PATH"' >> /root/.bashrc
 
 # Set working directory
