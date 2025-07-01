@@ -18,7 +18,7 @@ app ResumeEnhancerGPT {
         "<meta name=\"twitter:image:width\" content=\"800\" />",
         "<meta name=\"twitter:image:height\" content=\"400\" />",
         "<meta name=\"twitter:card\" content=\"summary_large_image\" />",
-        "<link rel=\"icon\" type=\"image/png\" href=\"http://localhost:3000/favicon.png\" />",
+        "<link rel=\"icon\" type=\"image/png\" href=\"#" />",
   ],
   // 🔐 Auth out of the box! https://wasp-lang.dev/docs/language/features#authentication--authorization
   auth: {
