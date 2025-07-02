@@ -17,6 +17,7 @@ COPY . .
 # (Optional, but safe)
 ENV PATH="/root/.local/bin:${PATH}"
 
+RUN wasp clean
 RUN wasp build
 
 EXPOSE 3001
