@@ -16,7 +16,7 @@ COPY . .
 
 # (Optional, but safe)
 ENV PATH="/root/.local/bin:${PATH}"
-
+# Force rebuild
 RUN wasp clean
 RUN wasp build
 
