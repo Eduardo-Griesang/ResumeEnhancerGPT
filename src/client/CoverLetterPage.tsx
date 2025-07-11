@@ -35,11 +35,11 @@ export default function CoverLetterPage() {
     { id: optimizedResumeId ?? '' },
     { enabled: !!optimizedResumeId }
   );
-  let parsedResume = null;
+  let parsedResume;
   try {
     parsedResume = optimizedResume?.content ? JSON.parse(optimizedResume.content) : null;
   } catch (e) {
-    parsedResume = null;
+    parsedResume;
   }
 
   type experienceModel = {
@@ -169,14 +169,14 @@ export default function CoverLetterPage() {
                   height={['xs', 'md', 'xl']}
                   overflowY="auto"
                 >
-                  <Heading size="md" textAlign="center">{parsedResume.name}</Heading>
-                  <Text textAlign="center" mb={2}>{parsedResume.title} | {parsedResume.location} | {parsedResume.email}</Text>
+                  <Heading size="md" textAlign="center">{parsedResume?.name}</Heading>
+                  <Text textAlign="center" mb={2}>{parsedResume?.title} | {parsedResume?.location} | {parsedResume?.email}</Text>
                   <Text fontWeight="bold" mt={2}>Summary</Text>
-                  <Text mb={2}>{parsedResume.summary}</Text>
+                  <Text mb={2}>{parsedResume?.summary}</Text>
                   <Text fontWeight="bold" mt={2}>Skills</Text>
-                  <Text mb={2}>{parsedResume.skills?.join(', ')}</Text>
+                  <Text mb={2}>{parsedResume?.skills?.join(', ')}</Text>
                   <Text fontWeight="bold" mt={2}>Experience</Text>
-                  {parsedResume.experience?.map((exp: experienceModel, i: number) => (
+                  {parsedResume?.experience?.map((exp: experienceModel, i: number) => (
                     <Box key={i} mb={2}>
                       <Text fontWeight="bold">{exp.role} @ {exp.company} <Text as="span" fontWeight="normal">({exp.period})</Text></Text>
                       <Text fontStyle="italic">{exp.description}</Text>
@@ -188,9 +188,9 @@ export default function CoverLetterPage() {
                     </Box>
                   ))}
                   <Text fontWeight="bold" mt={2}>Education</Text>
-                  <Text>{parsedResume.education?.degree}, {parsedResume.education?.institution}</Text>
-                  <Text>{parsedResume.education?.period}</Text>
-                  <Text>{parsedResume.education?.details}</Text>
+                  <Text>{parsedResume?.education?.degree}, {parsedResume?.education?.institution}</Text>
+                  <Text>{parsedResume?.education?.period}</Text>
+                  <Text>{parsedResume?.education?.details}</Text>
                 </Box>
               ) : (
                 <Text>No structured resume found</Text>
@@ -199,7 +199,7 @@ export default function CoverLetterPage() {
               <HStack spacing={2} mt={-1} justify="center">
                 <PDFDownloadLink
                   document={<ResumePdfDocument resume={parsedResume} />}
-                  fileName={`${parsedResume.title.replace(/\s+/g, '_')}_Resume.pdf`}
+                  fileName={`${parsedResume?.title.replace(/\s+/g, '_')}_Resume.pdf`}
                 >
                   {({ loading }) => (
                     <Button colorScheme="purple" size="sm" mt={2}>

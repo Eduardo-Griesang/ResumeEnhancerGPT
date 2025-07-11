@@ -122,7 +122,7 @@ export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResu
 
   const prompt = `You are a resume optimizer. Given a resume and a job description, rewrite the resume to better match the job description, 
     especially by aligning keywords and skills from the Summary and Skills section, still keep the skills from the original Resume like  
-    technologies, languages, etc, unless they are completely unrelated to the job, and make sure that the resume aligns with the job title.
+    technologies, languages, other skills, etc, unless they are completely unrelated to the job, and make sure that the resume aligns with the job title.
   
       Return ONLY a JSON object with the following structure, filling in all fields with the optimized content:
 

@@ -22,10 +22,10 @@ const PrivacyPolicy = () => {
 
         <LegalSection title='1. Introduction'>
           <Text>
-            Canger & Shahab Crimpin GbR ("we", "us", or "our") operates ResumeEnhancerGPT. 
+            ResumeEnhancerGPT ("we", "us", or "our") operates ResumeEnhancerGPT. 
             This page informs you of our policies regarding the collection, use, and 
             disclosure of personal data when you use our Service and the choices you 
-            have associated with that data.
+            have associated with that data. This Privacy Policy is intended to comply with the Brazilian General Data Protection Law (Lei Geral de Proteção de Dados Pessoais - LGPD, Law No. 13,709/2018).
           </Text>
         </LegalSection>
 
@@ -33,16 +33,14 @@ const PrivacyPolicy = () => {
           <Text>
             The data controller for your personal data is:
             <br />
-            Canger & Shahab Crimpin GbR
+            Email: griesangeduardo1@gmail.com
             <br />
-            Zum Steinberg 12, 69121 Heidelberg, Germany
-            <br />
-            Email: info.crimpin@gmail.com
+            Address: Duque de Caxias, Morro Reuter, Rio Grande do Sul, Brazil
           </Text>
         </LegalSection>
 
         <LegalSection title='3. Data We Collect'>
-          <Text mb={4}>We collect several different types of information for various purposes:</Text>
+          <Text mb={4}>We collect several different types of information for various purposes as permitted by the LGPD:</Text>
           <UnorderedList spacing={4}>
             <ListItem>
               <Text fontWeight='semibold'>Account Data:</Text>
@@ -65,7 +63,7 @@ const PrivacyPolicy = () => {
               <UnorderedList ml={6} mt={2} spacing={2}>
                 <ListItem>CV information you provide</ListItem>
                 <ListItem>Job descriptions you input</ListItem>
-                <ListItem>Generated (example)cover letters</ListItem>
+                <ListItem>Generated (example) cover letters</ListItem>
               </UnorderedList>
             </ListItem>
             <ListItem>
@@ -108,23 +106,23 @@ const PrivacyPolicy = () => {
           </UnorderedList>
         </LegalSection>
 
-        <LegalSection title='5. Legal Basis for Processing'>
+        <LegalSection title='5. Legal Basis for Processing (LGPD)'>
           <UnorderedList spacing={4}>
             <ListItem>
-              <Text fontWeight='semibold' as='span'>Contract Performance: </Text>
-              Processing necessary for the performance of our contract with you
+              <Text fontWeight='semibold' as='span'>Performance of Contract: </Text>
+              Processing necessary for the performance of our contract with you.
             </ListItem>
             <ListItem>
-              <Text fontWeight='semibold' as='span'>Legal Obligations: </Text>
-              Processing necessary for compliance with legal obligations
+              <Text fontWeight='semibold' as='span'>Legal Obligation: </Text>
+              Processing necessary for compliance with Brazilian legal obligations.
             </ListItem>
             <ListItem>
-              <Text fontWeight='semibold' as='span'>Legitimate Interests: </Text>
-              Processing based on our legitimate interests in improving and promoting our services
+              <Text fontWeight='semibold' as='span'>Legitimate Interest: </Text>
+              Processing based on our legitimate interests in improving and promoting our services, provided your fundamental rights and freedoms are not overridden.
             </ListItem>
             <ListItem>
               <Text fontWeight='semibold' as='span'>Consent: </Text>
-              Processing based on your specific consent where required
+              Processing based on your specific consent where required by the LGPD.
             </ListItem>
           </UnorderedList>
         </LegalSection>
@@ -137,20 +135,22 @@ const PrivacyPolicy = () => {
           <UnorderedList spacing={2}>
             <ListItem>Account data: As long as your account is active</ListItem>
             <ListItem>Generated content: For as long as necessary to provide our services or until you delete your account</ListItem>
-            <ListItem>Payment records: As required by tax laws (typically 10 years in Germany)</ListItem>
+            <ListItem>Payment records: As required by Brazilian tax laws</ListItem>
           </UnorderedList>
         </LegalSection>
 
-        <LegalSection title='7. Your Data Protection Rights'>
-          <Text mb={4}>Under GDPR, you have the following rights:</Text>
+        <LegalSection title='7. Your Data Protection Rights (LGPD)'>
+          <Text mb={4}>Under the LGPD, you have the following rights:</Text>
           <UnorderedList spacing={2} mb={4}>
+            <ListItem>Right to confirmation of the existence of processing</ListItem>
             <ListItem>Right to access your personal data</ListItem>
-            <ListItem>Right to rectification of inaccurate data</ListItem>
-            <ListItem>Right to erasure ("right to be forgotten")</ListItem>
-            <ListItem>Right to restrict processing</ListItem>
+            <ListItem>Right to correct incomplete, inaccurate, or outdated data</ListItem>
+            <ListItem>Right to anonymization, blocking, or deletion of unnecessary or excessive data</ListItem>
             <ListItem>Right to data portability</ListItem>
-            <ListItem>Right to object to processing</ListItem>
-            <ListItem>Right to withdraw consent</ListItem>
+            <ListItem>Right to deletion of personal data processed with your consent</ListItem>
+            <ListItem>Right to information about public and private entities with which we share data</ListItem>
+            <ListItem>Right to information about the possibility of denying consent and the consequences</ListItem>
+            <ListItem>Right to revoke consent</ListItem>
           </UnorderedList>
           <Text>
             To exercise these rights, please contact us at info.crimpin@gmail.com
@@ -171,18 +171,18 @@ const PrivacyPolicy = () => {
           </UnorderedList>
           <Text>
             All third parties are contractually obligated to protect your data and 
-            may only use it for specified purposes.
+            may only use it for specified purposes, in accordance with the LGPD.
           </Text>
         </LegalSection>
 
         <LegalSection title='9. International Data Transfers'>
           <Text mb={4}>
-            Your data may be transferred to and processed in countries outside the EU. 
-            When this occurs, we ensure appropriate safeguards are in place through:
+            Your data may be transferred to and processed in countries outside Brazil. 
+            When this occurs, we ensure appropriate safeguards are in place as required by the LGPD, such as:
           </Text>
           <UnorderedList spacing={2}>
-            <ListItem>EU Standard Contractual Clauses</ListItem>
-            <ListItem>Adequacy decisions by the European Commission</ListItem>
+            <ListItem>Standard contractual clauses</ListItem>
+            <ListItem>International cooperation agreements</ListItem>
             <ListItem>Other legally recognized transfer mechanisms</ListItem>
           </UnorderedList>
         </LegalSection>
@@ -231,15 +231,14 @@ const PrivacyPolicy = () => {
           </Text>
           <UnorderedList spacing={2} mb={4}>
             <ListItem>
-              By email: info.crimpin@gmail.com
+              By email: griesangeduardo1@gmail.com
             </ListItem>
             <ListItem>
-              By mail: Canger & Shahab Crimpin GbR, Zum Steinberg 12, 69121 Heidelberg, Germany
+              By mail: Duque de Caxias, Morro Reuter, Rio Grande do Sul, Brazil
             </ListItem>
           </UnorderedList>
           <Text>
-            You have the right to lodge a complaint with a supervisory authority if you 
-            believe our processing of your personal data violates data protection laws.
+            You have the right to lodge a complaint with the Brazilian National Data Protection Authority (ANPD) if you believe our processing of your personal data violates data protection laws.
           </Text>
         </LegalSection>
       </VStack>

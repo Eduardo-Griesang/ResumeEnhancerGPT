@@ -221,7 +221,7 @@ export const updateLnPayment: UpdateLnPayment<LightningInvoice, LnPayment> = asy
 };
 
 const getBitcoinPrice = async () => {
-  let response = null;
+  let response;
 
   try {
     response = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest', {

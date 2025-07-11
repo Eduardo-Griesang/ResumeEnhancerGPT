@@ -48,6 +48,7 @@ export function EditPopover({ setTooltip, selectedText, user, ...props }: EditPo
         }
         return lnPayment;
       }
+      return null;
     } catch (error) {
       console.error('Error processing payment, please try again');
       return null;
@@ -106,7 +107,7 @@ export function EditPopover({ setTooltip, selectedText, user, ...props }: EditPo
       window.getSelection()?.removeAllRanges();
       return;
     }
-    let lnPayment: LnPayment | undefined;
+    let lnPayment: LnPayment | null | undefined;
     if (userInfo?.isUsingLn) {
       if (userInfo.credits > 0) {
         onPayOpen();
@@ -117,7 +118,9 @@ export function EditPopover({ setTooltip, selectedText, user, ...props }: EditPo
         console.error('error paying with ln: ', error);
       }
     }
-    replaceSelectedText({ improvement: value, lnPayment });
+    if (lnPayment) {
+      replaceSelectedText({ improvement: value, lnPayment });
+    }
     window.getSelection()?.removeAllRanges();
   };
 
