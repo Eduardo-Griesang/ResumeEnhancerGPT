@@ -1,5 +1,5 @@
 import { VStack, HStack, Text, Link, Divider } from '@chakra-ui/react';
-import { FaTwitter, FaGithub } from 'react-icons/fa';
+import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import { Link as WaspLink } from 'wasp/client/router';
 
 export function Footer() {
@@ -16,11 +16,11 @@ export function Footer() {
           </HStack>
         </Link>
 
-        <Link href='https://x.com/EGriesang' target='_blank' color='purple.300'>
+        <Link href='https://www.linkedin.com/in/eduardo-griesang/' target='_blank' color='purple.300'>
           <HStack justify='center'>
-            <FaTwitter />
+            <FaLinkedinIn />
             <Text fontSize='sm' color='purple.300'>
-              Follow me on Twitter
+              Let's connect on LinkedIn
             </Text>
           </HStack>
         </Link>

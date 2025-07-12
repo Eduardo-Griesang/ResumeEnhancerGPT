@@ -36,6 +36,9 @@ import {
   Radio,
   Tooltip,
   useDisclosure,
+  useColorModeValue,
+  Stack,
+  Divider,
 } from '@chakra-ui/react';
 import BorderBox from './components/BorderBox';
 import { LeaveATip, LoginToBegin } from './components/AlertDialog';
@@ -48,6 +51,7 @@ import { useNavigate } from 'react-router-dom';
 import LnPaymentModal from './components/LnPaymentModal';
 import { fetchLightningInvoice } from './lightningUtils';
 import type { LightningInvoice } from './lightningUtils';
+import { FaCheckCircle, FaPaperclip, FaPen, FaPlus } from "react-icons/fa";
 
 function MainPage() {
   const [isPdfReady, setIsPdfReady] = useState<boolean>(false);
@@ -367,9 +371,25 @@ function MainPage() {
   const showForm = (isCoverLetterUpdate && job) || !isCoverLetterUpdate;
   const showSpinner = isCoverLetterUpdate && isJobLoading;
   const showJobNotFound = isCoverLetterUpdate && !job && !isJobLoading;
+  const gptTextColor = useColorModeValue('purple.500', 'white');
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleTryNowClick = () => {
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <>
+      <VStack gap={3} marginTop={8} marginBottom={4} textAlign={"center"}>  
+        <span ref={formRef}></span>
+        <Heading size='2xl' color={gptTextColor}>
+          Generate Resumes and Cover Letters
+        </Heading>
+        <Heading size='xl' color={'text-contrast-md'}>
+          Perfectly customized for the job
+        </Heading>
+      </VStack>
       <Box
         layerStyle='card'
         px={4}
@@ -648,6 +668,48 @@ function MainPage() {
           )}
         </form>
       </BorderBox>
+      <VStack mt={12} mb={8} spacing={6} textAlign="center" w="full">
+        <Heading size="lg" color="text-contrast-lg">
+          How It Works
+        </Heading>
+        <Stack direction={['column', 'row']} spacing={12} justify="center" w="full">
+          <VStack>
+            <Box fontSize="3xl" color="purple.400"><FaPaperclip /></Box>
+            <Text fontWeight="bold">1. Upload PDF CV</Text>
+            <Text fontSize="sm" color={'text-contrast-md'}>Start with your existing CV/Resumé.</Text>
+          </VStack>
+          <VStack>
+            <Box fontSize="3xl" color="purple.400"><FaPlus /></Box>
+            <Text fontWeight="bold">2. Add Job & Customize</Text>
+            <Text fontSize="sm" color={'text-contrast-md'}>Paste the description and adjust creativity level.</Text>
+          </VStack>
+          <VStack>
+            <Box fontSize="3xl" color="purple.400"><FaCheckCircle /></Box>
+            <Text fontWeight="bold">3. Generate Draft</Text>
+            <Text fontSize="sm" color={'text-contrast-md'}>Let AI create a tailored first version in seconds.</Text>
+          </VStack>
+          <VStack>
+            <Box fontSize="3xl" color="purple.400"><FaPen /></Box>
+            <Text fontWeight="bold">4. Refine Instantly</Text>
+            <Text fontSize="sm" color={'text-contrast-md'}>Use inline tools to make it concise, detailed, etc.</Text>
+          </VStack>
+        </Stack>
+      </VStack>
+      <VStack width={"100%"} justify={"center"}>
+        <Divider/>
+        <Button
+          colorScheme='purple'
+          mt={12}
+          mb={2}
+          size='lg'
+          type='button'
+          onClick={handleTryNowClick}
+        >
+          Try Now
+        </Button>
+        <Text color={'text-contrast-md'} marginTop={1} fontSize="sm">Test for free now with 3 credits!</Text>
+        <Text color={'text-contrast-md'} fontSize="sm" marginTop={-1}>Get an UNLIMITED monthly plan for as little as $5.99</Text>
+      </VStack>
       <LeaveATip
         isOpen={isOpen}
         onOpen={onOpen}

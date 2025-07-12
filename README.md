@@ -1,4 +1,4 @@
-# CoverLetterGPT.xyz
+# ResumeEnhancerGPT.xyz
 
 <img src='public/homepage.png' width='600px'/>
 
@@ -17,8 +17,8 @@ After cloning this repo, you can run it locally by following these steps:
 8. install the [Wasp extension for VSCode](https://marketplace.visualstudio.com/items?itemName=wasp-lang.wasp) for the best DX
 
 ## How it works
-
-[coverlettergpt.xyz](http://coverlettergpt.xyz) was built using a few really cool tools:
+[ResumeEnhancergpt.xyz](http://www.resumeenhancergpt.xyz) was built using a few really cool tools:
+[coverlettergpt.xyz](http://coverlettergpt.xyz) open source code as a base:
 
 - 🐝 [Wasp](https://wasp.sh) - allows you to build full-stack apps with 10x less boilerplate
 - 🎨 [Chakra-ui](https://chakra-ui.com/) - UI components for React that look good and are easy to work with
@@ -38,4 +38,4 @@ For more info on the prompts and configuration I used for the [OpenAI](https://o
 
 I also implemented a cron job to send an email to the user to notify them 2 weeks before their subscription ends. I used [SendGrid](https://sendgrid.com/) for the email service.
 
-If you have any other questions, feel free to reach out to me on [twitter](https://twitter.com/hot_town)
+If you have any other questions, feel free to reach out to me on [linkedin](https://www.linkedin.com/in/eduardo-griesang/)

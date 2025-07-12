@@ -71,7 +71,7 @@ export default function ProfilePage({ user }: { user: User }) {
               )}
               <Text alignSelf='initial' fontSize='sm' fontStyle='italic' textColor='text-contrast-sm'>
                 To manage your subscription, please{' '}
-                <Link textColor='purple.600' href='https://billing.stripe.com/p/login/5kA7sS0Wc3gD2QM6oo'>
+                <Link textColor='purple.600' href='https://billing.stripe.com/p/login/eVq14p1ke6ly4S77O30sU00'>
                   click here.
                 </Link>
               </Text>
