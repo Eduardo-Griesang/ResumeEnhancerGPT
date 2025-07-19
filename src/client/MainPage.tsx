@@ -74,7 +74,10 @@ function MainPage() {
     error: getJobError,
   } = useQuery(getJob, { id: jobToFetch }, { enabled: jobToFetch.length > 0 });
 
-  const { data: coverLetterCount } = useQuery(getCoverLetterCount);
+  let { data: coverLetterCount } = useQuery(getCoverLetterCount);
+  if (coverLetterCount) {
+    coverLetterCount = coverLetterCount * 2
+  }
 
   const {
     handleSubmit,

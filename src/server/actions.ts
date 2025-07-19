@@ -120,7 +120,8 @@ export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResu
   }
   await checkIfUserPaid({ context, lnPayment });
 
-  const prompt = `You are a resume optimizer. Given a resume and a job description, rewrite the resume to better match the job description, 
+  const prompt = `You are a resume optimizer. Given a resume and a job description, rewrite the resume to better match the job description. 
+    Write the resume in the same language as the job description provided, make sure to not mix languages on the titles, summary, skills, dates, education, etc!
     especially by aligning keywords and skills from the Summary and Skills section, still keep the skills from the original Resume like  
     technologies, languages, other skills, etc, unless they are completely unrelated to the job, and make sure that the resume aligns with the job title.
   
@@ -131,8 +132,11 @@ export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResu
         "title": "...",
         "location": "...",
         "email": "...",
+        "summaryTitle": "...",
         "summary": "...",
+        "skillsTitle": "...",
         "skills": ["...", "..."],
+        "experienceTitle": "...",
         "experience": [
           {
             "role": "...",
@@ -142,6 +146,7 @@ export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResu
             "bullets": ["...", "..."]
           }
         ],
+        "educationTitle": "...",
         "education": {
           "degree": "...",
           "institution": "...",

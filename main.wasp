@@ -10,14 +10,15 @@ app ResumeEnhancerGPT {
         "<meta name=\"keywords\" content=\"cover letter, resume, gpt, ai, job search, cv\" />",
         "<meta name=\"author\" content=\"ResumeEnhancerGPT\" />",
         "<meta property=\"og:type\" content=\"website\" />",
-        "<meta property=\"og:url\" content=\"https://CoverLetterGPT.xyz\" />",
+        "<meta property=\"og:url\" content=\"https://www.resumeenhancergpt.xyz\" />",
         "<meta property=\"og:title\" content=\"ResumeEnhancerGPT\" />",
         "<meta property=\"og:description\" content=\"Create Unique Cover Letters and Resumes Based on Your Skills using GPT. Supercharge Your Job Search with Resume Enhancer GPT.\" />",
-        "<meta property=\"og:image\" content=\"https://CoverLetterGPT.xyz/homepage.png\" />",
-        "<meta name=\"twitter:image\" content=\"https://CoverLetterGPT.xyz/homepage.png\" />",
+        "<meta property=\"og:image\" content=\"https://www.resumeenhancergpt.xyz/home.png\" />",
+        "<meta name=\"twitter:image\" content=\"https://www.resumeenhancergpt.xyz/home.png\" />",
         "<meta name=\"twitter:image:width\" content=\"800\" />",
         "<meta name=\"twitter:image:height\" content=\"400\" />",
         "<meta name=\"twitter:card\" content=\"summary_large_image\" />",
+        "<link rel=\"manifest\" href=\"/manifest.json\" />",
   ],
   // 🔐 Auth out of the box! https://wasp-lang.dev/docs/language/features#authentication--authorization
   auth: {
