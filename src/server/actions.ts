@@ -12,7 +12,8 @@ import {
   type StripePayment,
   type StripeGpt4Payment,
   type StripeCreditsPayment,
-  type OptimizeResume
+  type OptimizeResume,
+  type EditResume
 } from "wasp/server/operations";
 import fetch from 'node-fetch';
 import Stripe from 'stripe';
@@ -30,6 +31,7 @@ You will write a cover letter for the applicant that matches their past experien
 Rather than simply outlining the applicant's past experiences, you will give more detail and explain how those experiences will help the applicant succeed in the new job.
 Make it 3 to 4 paragraphs, the first one mainly talking about why the person would be a great fit for the company, the second one and maybe third about how the previous experience alligns with the company,
 and the final one about final thoughts. Do not add a date to the Cover Letter.
+Always write the cover letter at the same language as the job description you were sent!!!
 You will write the cover letter in a modern, professional style without being too formal, as a modern employee might do naturally.`,
   coverLetterWithAWittyRemark: `You are a cover letter generator.
 You will be given a job description along with the job applicant's resume.
@@ -37,6 +39,7 @@ You will write a cover letter for the applicant that matches their past experien
 Rather than simply outlining the applicant's past experiences, you will give more detail and explain how those experiences will help the applicant succeed in the new job.
 Make it 3 to 4 paragraphs, the first one mainly talking about why the person would be a great fit for the company, the second one and maybe third about how the previous experience alligns with the company,
 and the final one about final thoughts. Do not add a date to the Cover Letter.
+Always write the cover letter at the same language as the job description you were sent!!!
 You will write the cover letter in a modern, relaxed style, as a modern employee might do naturally.
 Include a job related joke at the end of the cover letter.`,
   ideasForCoverLetter:
@@ -206,6 +209,91 @@ export const optimizeResume: OptimizeResume<OptimizeResumePayload, OptimizedResu
     console.error(error);
     throw new HttpError(error.statusCode || 500, error.message || 'Something went wrong');
   }
+};
+
+export const editResume: EditResume<{ optimizedResumeId: string; content: string; gptModel: string }, OptimizedResume> = async (
+  { optimizedResumeId, content, gptModel},
+  context
+) => {
+  if (!context.user) {
+    throw new HttpError(401);
+  }
+
+  // Prompt for GPT to parse the resume text into your JSON structure
+  const prompt = `
+You are a resume parser. Given the following resume text, return ONLY a JSON object with these exact fields:
+{
+  "name": "...",
+  "title": "...",
+  "location": "...",
+  "email": "...",
+  "summaryTitle": "...",
+  "summary": "...",
+  "skillsTitle": "...",
+  "skills": ["...", "..."],
+  "experienceTitle": "...",
+  "experience": [
+    {
+      "role": "...",
+      "company": "...",
+      "period": "...",
+      "description": "...",
+      "bullets": ["...", "..."]
+    }
+  ],
+  "educationTitle": "...",
+  "education": {
+    "degree": "...",
+    "institution": "...",
+    "period": "...",
+    "details": "..."
+  }
+}
+Use the section titles and content as provided, even if they are in another language. Do not include any explanation or extra text, only the JSON.
+
+Resume:
+${content}
+`;
+
+  const payload = {
+    model: gptModel,
+    messages: [
+      { role: 'system', content: prompt }
+    ],
+    temperature: 0.2,
+  };
+
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY!}`,
+    },
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+
+  const json = await response.json() as OpenAIResponse;
+  if (json?.error) throw new HttpError(500, json?.error?.message || 'Something went wrong');
+
+  // Extract and parse the JSON from the AI's response
+  let parsedContent;
+  try {
+    // Remove any leading/trailing code block markers if present
+    let aiContent = json?.choices?.[0]?.message?.content?.trim();
+    if (aiContent.startsWith('```json')) aiContent = aiContent.replace(/^```json/, '').replace(/```$/, '').trim();
+    parsedContent = JSON.parse(aiContent);
+  } catch (e) {
+    throw new HttpError(400, "AI did not return valid JSON.");
+  }
+
+  return context.entities.OptimizedResume.update({
+    where: {
+      id: optimizedResumeId,
+    },
+    data: {
+      content: JSON.stringify(parsedContent),
+    },
+  });
 };
 
 export const generateCoverLetter: GenerateCoverLetter<CoverLetterPayload, CoverLetter> = async (
@@ -728,3 +816,6 @@ export const stripeCreditsPayment: StripeCreditsPayment<void, StripePaymentResul
     }
   });
 };
+
+
+

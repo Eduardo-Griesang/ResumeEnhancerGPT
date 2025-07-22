@@ -30,15 +30,15 @@ export default function ResumePdfDocument({ resume }:any) {
         <Text style={styles.header}>{resume.name}</Text>
         <Text style={styles.title}>{resume.title}</Text>
         <Text style={styles.subHeader}>| {resume.location} | {resume.email} |</Text>
-        <Text style={styles.sectionTitle}>Summary</Text>
+        <Text style={styles.sectionTitle}>{resume.summaryTitle}</Text>
         <Text style={styles.text}>{resume.summary}</Text>
-        <Text style={styles.sectionTitle}>Skills</Text>
+        <Text style={styles.sectionTitle}>{resume.skillsTitle}</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           {resume.skills.map((skill: string, i: number) => (
             <Text key={i} style={styles.bullet}>• {skill}</Text>
           ))}
         </View>
-        <Text style={styles.sectionTitle}>Experience</Text>
+        <Text style={styles.sectionTitle}>{resume.experienceTitle}</Text>
         {resume.experience.map((exp: experienceModel, i: number) => (
           <View key={i} style={{ marginBottom: 8 }}>
             <View style={styles.row}>
@@ -52,7 +52,7 @@ export default function ResumePdfDocument({ resume }:any) {
             ))}
           </View>
         ))}
-        <Text style={styles.sectionTitle}>Education</Text>
+        <Text style={styles.sectionTitle}>{resume.educationTitle}</Text>
         <View style={styles.row}>
           <Text style={styles.bold}>{resume.education.degree}</Text>
           <Text style={styles.text}>{resume.education.period}</Text>

@@ -133,6 +133,11 @@ action editCoverLetter {
   entities: [CoverLetter]
 }
 
+action editResume {
+  fn: import { editResume } from "@src/server/actions.js",
+  entities: [OptimizedResume]
+}
+
 action updateUser {
   fn: import { updateUser } from "@src/server/actions.js",
   entities: [User]
