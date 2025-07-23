@@ -23,10 +23,12 @@ type experienceModel = {
   bullets: string[];
 }
 
+const legalSize = { width: 612, height: 1008 };
+
 export default function ResumePdfDocument({ resume }:any) {
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size={legalSize} style={styles.page}>
         <Text style={styles.header}>{resume.name}</Text>
         <Text style={styles.title}>{resume.title}</Text>
         <Text style={styles.subHeader}>| {resume.location} | {resume.email} |</Text>
