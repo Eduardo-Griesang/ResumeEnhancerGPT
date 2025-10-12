@@ -57,7 +57,7 @@ type GetCoverLetterArgs = {
   id: string;
 };
 
-export const getCoverLetters: GetCoverLetter<GetCoverLetterArgs, CoverLetter[]> = async ({ id }, context) => {
+export const getCoverLetters: GetCoverLetter<GetCoverLetterArgs, (CoverLetter & { job: Job })[]> = async ({ id }, context) => {
   if (!context.user) {
     throw new HttpError(401);
   }
@@ -66,6 +66,9 @@ export const getCoverLetters: GetCoverLetter<GetCoverLetterArgs, CoverLetter[]> 
     where: {
       job: { id },
       user: { id: context.user.id },
+    },
+    include: {
+      job: true,
     },
   });
 };

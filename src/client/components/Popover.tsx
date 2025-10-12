@@ -129,7 +129,7 @@ export function EditPopover({ setTooltip, selectedText, user, ...props }: EditPo
       <VStack {...props} gap={1} bgColor='bg-modal' borderRadius='lg' boxShadow='2xl'>
         <Box layerStyle='cardLg' p={3}>
           <Text fontSize='sm' textAlign='center'>
-            🤔 Ask GPT to make this part more..
+            Ask GPT to make this part more..
           </Text>
           <ButtonGroup size='xs' p={1} variant='solid' colorScheme='purple' isAttached>
             <Button size='xs' color='black' fontSize='xs' onClick={() => handleClick('concise')}>

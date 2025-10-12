@@ -1,4 +1,4 @@
-import { type CoverLetter } from "wasp/entities";
+import { type CoverLetter, type Job } from "wasp/entities";
 import {
   Select,
   Modal,
@@ -19,8 +19,10 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CoverLetterPdfDocument from "./CoverLetterPdfDocument";
 
+type CoverLetterWithJob = CoverLetter & { job: Job };
+
 type ModalProps = {
-  coverLetterData: CoverLetter[];
+  coverLetterData: CoverLetterWithJob[];
   isOpen: boolean;
   onClose: () => void;
   onOpen: () => void;
@@ -28,7 +30,7 @@ type ModalProps = {
 };
 
 export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose, title }: ModalProps) {
-  const [selectedCoverLetter, setSelectedCoverLetter] = useState<CoverLetter>(coverLetterData[0]);
+  const [selectedCoverLetter, setSelectedCoverLetter] = useState<CoverLetterWithJob>(coverLetterData[0]);
 
   const { hasCopied, onCopy } = useClipboard(selectedCoverLetter.content);
 
@@ -47,7 +49,14 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose,
 
   const convertDateToLocaleString = (date: Date) => {
     return date.toLocaleDateString() + ' - ' + date.toLocaleTimeString().split(':').slice(0, 2).join(':');
-  }
+  };
+
+  const sanitizeFilenameSegment = (value: string) =>
+    value.trim().replace(/[^\w]+/g, '_').replace(/^_+|_+$/g, '');
+
+  const coverLetterFileName = selectedCoverLetter.job?.company
+    ? `${sanitizeFilenameSegment(selectedCoverLetter.job.company) || 'CoverLetter'}_cover_letter.pdf`
+    : 'CoverLetter.pdf';
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={copyButtonRef}>
@@ -85,23 +94,23 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose,
           />
         </ModalBody>
 
-        <ModalFooter alignItems='baseline' gap={3}>
+        <ModalFooter alignItems='center' gap={3}>
           <Tooltip
             label={hasCopied ? 'Copied!' : 'Copy Letter to Clipboard'}
             placement='top'
             hasArrow
             closeOnClick={false}
           >
-            <Button ref={copyButtonRef} colorScheme='purple' size='sm' mr={3} onClick={onCopy}>
+            <Button ref={copyButtonRef} colorScheme='purple' size='sm' onClick={onCopy}>
               Copy
             </Button>
           </Tooltip>
           <PDFDownloadLink
             document={<CoverLetterPdfDocument coverLetter={selectedCoverLetter.content} />}
-            fileName={`CoverLetter.pdf`}
+            fileName={coverLetterFileName}
           >
             {({ loading }) => (
-              <Button colorScheme="purple" size="sm" mr={3}>
+              <Button colorScheme="purple" size="sm">
                 {loading ? 'Preparing PDF...' : 'Download as PDF'}
               </Button>
             )}
@@ -112,7 +121,6 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose,
             colorScheme='purple'
             variant='outline'
             size='sm'
-            mr={3}
             onClick={() => navigate(`/cover-letter/${selectedCoverLetter.id}`)}
           >
             Edit
