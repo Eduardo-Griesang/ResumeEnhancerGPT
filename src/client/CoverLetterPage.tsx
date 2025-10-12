@@ -1,4 +1,4 @@
-import { type CoverLetter } from "wasp/entities";
+import { type CoverLetter, type Job } from "wasp/entities";
 import { editCoverLetter, useQuery, getCoverLetter, getOptimizedResume, editResume } from "wasp/client/operations";
 import { Box, HStack, Spinner, Textarea, Text, Button, VStack, useClipboard, Heading } from "@chakra-ui/react";
 import { useLocation, useParams } from 'react-router-dom';
@@ -30,7 +30,7 @@ export default function CoverLetterPage() {
     data: coverLetter,
     isLoading,
     refetch,
-  } = useQuery<{ id: string }, CoverLetter>(getCoverLetter, { id }, { enabled: false });
+  } = useQuery<{ id: string }, CoverLetter & { job: Job }>(getCoverLetter, { id }, { enabled: false });
 
   const { data: optimizedResume, isLoading: isResumeLoading } = useQuery(
     getOptimizedResume,
@@ -130,6 +130,13 @@ export default function CoverLetterPage() {
     return text.trim();
   }
 
+  const sanitizeFilenameSegment = (value: string) =>
+    value.trim().replace(/[^\w]+/g, '_').replace(/^_+|_+$/g, '');
+
+  const coverLetterFileName = coverLetter?.job?.company
+    ? `${sanitizeFilenameSegment(coverLetter.job.company) || 'CoverLetter'}_cover_letter.pdf`
+    : 'CoverLetter.pdf';
+
   return (
     <>
       <BorderBox px={[0.5, 0.5]} py={[0.5, 0.5]} maxWidth="900px" mx="auto">
@@ -179,7 +186,7 @@ export default function CoverLetterPage() {
                 </Button>
                 <PDFDownloadLink
                   document={<CoverLetterPdfDocument coverLetter={textareaState} />}
-                  fileName={`CoverLetter.pdf`}
+                  fileName={coverLetterFileName}
                 >
                   {({ loading }) => (
                     <Button colorScheme="purple" size="sm">

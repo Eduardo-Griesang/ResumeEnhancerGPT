@@ -9,7 +9,7 @@ import {
   type GetOptimizedResume
 } from "wasp/server/operations";
 
-export const getCoverLetter: GetCoverLetter<Pick<CoverLetter, 'id'> , CoverLetter> = async ({ id }, context) => {
+export const getCoverLetter: GetCoverLetter<Pick<CoverLetter, 'id'>, CoverLetter & { job: Job }> = async ({ id }, context) => {
   if (!context.user) {
     throw new HttpError(401);
   }
@@ -18,6 +18,9 @@ export const getCoverLetter: GetCoverLetter<Pick<CoverLetter, 'id'> , CoverLette
     where: {
       id,
       user: { id: context.user.id },
+    },
+    include: {
+      job: true,
     },
   });
 };
