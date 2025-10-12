@@ -35,7 +35,7 @@ export default function ResumePdfDocument({ resume }:any) {
         <Text style={styles.sectionTitle}>{resume.summaryTitle}</Text>
         <Text style={styles.text}>{resume.summary}</Text>
         <Text style={styles.sectionTitle}>{resume.skillsTitle}</Text>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
           {resume.skills.map((skill: string, i: number) => (
             <Text key={i} style={styles.bullet}>• {skill}</Text>
           ))}
