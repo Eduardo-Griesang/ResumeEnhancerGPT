@@ -206,7 +206,7 @@ function MainPage() {
       jobDescriptionFileInputRef.current.value = '';
     }
     if (shouldUsePdf) {
-      setValue('description', '', { shouldValidate: true });
+      setValue('description', '');
     }
     clearErrors('description');
   }
