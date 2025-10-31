@@ -101,7 +101,7 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose,
             hasArrow
             closeOnClick={false}
           >
-            <Button ref={copyButtonRef} colorScheme='purple' size='sm' onClick={onCopy}>
+            <Button ref={copyButtonRef} colorScheme='brand' size='sm' onClick={onCopy}>
               Copy
             </Button>
           </Tooltip>
@@ -110,7 +110,7 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose,
             fileName={coverLetterFileName}
           >
             {({ loading }) => (
-              <Button colorScheme="purple" size="sm">
+              <Button colorScheme="brand" size="sm">
                 {loading ? 'Preparing PDF...' : 'Download as PDF'}
               </Button>
             )}
@@ -118,7 +118,7 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose,
           {!title ? (
             <Button
             leftIcon={<AiOutlineEdit />}
-            colorScheme='purple'
+            colorScheme='brand'
             variant='outline'
             size='sm'
             onClick={() => navigate(`/cover-letter/${selectedCoverLetter.id}`)}

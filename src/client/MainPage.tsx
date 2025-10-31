@@ -374,7 +374,7 @@ function MainPage() {
   const showForm = (isCoverLetterUpdate && job) || !isCoverLetterUpdate;
   const showSpinner = isCoverLetterUpdate && isJobLoading;
   const showJobNotFound = isCoverLetterUpdate && !job && !isJobLoading;
-  const gptTextColor = useColorModeValue('purple.500', 'white');
+  const gptTextColor = useColorModeValue('brand.500', 'white');
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -404,7 +404,7 @@ function MainPage() {
         _hover={{ bgColor: 'bg-contrast-xs' }}
         transition='0.1s ease-in-out'
       >
-        <Text fontSize='md'>{coverLetterCount?.toLocaleString()} Resumes and Cover Letters Generated! 🎉</Text>
+        <Text fontSize='md'>{coverLetterCount?.toLocaleString()} Resumes and Cover Letters Generated!</Text>
       </Box>
       <BorderBox>
         <form
@@ -583,7 +583,7 @@ function MainPage() {
                     defaultValue={30}
                     min={0}
                     max={68}
-                    colorScheme='purple'
+                    colorScheme='brand'
                     onChange={(v) => setSliderValue(v)}
                     onMouseEnter={() => setShowTooltip(true)}
                     onMouseLeave={() => setShowTooltip(false)}
@@ -593,7 +593,7 @@ function MainPage() {
                     </SliderTrack>
                     <Tooltip
                       hasArrow
-                      bg='purple.300'
+                      bg='brand.300'
                       color='white'
                       placement='top'
                       isOpen={showTooltip}
@@ -647,7 +647,7 @@ function MainPage() {
               </VStack>
               <HStack alignItems='flex-end' gap={1}>
                 <Button
-                  colorScheme='purple'
+                  colorScheme='brand'
                   mt={3}
                   size='sm'
                   isLoading={isSubmitting}
@@ -677,22 +677,22 @@ function MainPage() {
         </Heading>
         <Stack direction={['column', 'row']} spacing={12} justify="center" w="full">
           <VStack>
-            <Box fontSize="3xl" color="purple.400"><FaPaperclip /></Box>
+            <Box fontSize="3xl" color="brand.400"><FaPaperclip /></Box>
             <Text fontWeight="bold">1. Upload PDF CV</Text>
             <Text fontSize="sm" color={'text-contrast-md'}>Start with your existing CV/Resumé.</Text>
           </VStack>
           <VStack>
-            <Box fontSize="3xl" color="purple.400"><FaPlus /></Box>
+            <Box fontSize="3xl" color="brand.400"><FaPlus /></Box>
             <Text fontWeight="bold">2. Add Job & Customize</Text>
             <Text fontSize="sm" color={'text-contrast-md'}>Paste the description and adjust creativity level.</Text>
           </VStack>
           <VStack>
-            <Box fontSize="3xl" color="purple.400"><FaCheckCircle /></Box>
+            <Box fontSize="3xl" color="brand.400"><FaCheckCircle /></Box>
             <Text fontWeight="bold">3. Generate Draft</Text>
             <Text fontSize="sm" color={'text-contrast-md'}>Let AI create a tailored first version in seconds.</Text>
           </VStack>
           <VStack>
-            <Box fontSize="3xl" color="purple.400"><FaPen /></Box>
+            <Box fontSize="3xl" color="brand.400"><FaPen /></Box>
             <Text fontWeight="bold">4. Refine Instantly</Text>
             <Text fontSize="sm" color={'text-contrast-md'}>Use inline tools to make it concise, detailed, etc.</Text>
           </VStack>
@@ -701,7 +701,7 @@ function MainPage() {
       <VStack width={"100%"} justify={"center"}>
         <Divider/>
         <Button
-          colorScheme='purple'
+          colorScheme='brand'
           mt={12}
           mb={2}
           size='lg'

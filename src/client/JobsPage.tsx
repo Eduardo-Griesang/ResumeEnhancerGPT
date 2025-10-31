@@ -172,10 +172,10 @@ function JobsPage({ user }: { user: User }) {
                         justify='space-between'
                         width="100%"
                       >
-                        <Button colorScheme='purple' onClick={() => coverLetterHandler(job)} size='sm'>
+                        <Button colorScheme='brand' onClick={() => coverLetterHandler(job)} size='sm'>
                           Display Cover Letter
                         </Button>
-                        <Button colorScheme='purple' onClick={() => resumeHandler(job)} size='sm'>
+                        <Button colorScheme='brand' onClick={() => resumeHandler(job)} size='sm'>
                           Display Resume
                         </Button>
                       </Stack>
@@ -189,7 +189,7 @@ function JobsPage({ user }: { user: User }) {
           </Accordion>
         )}
       </BorderBox>
-      <Button size='sm' mt={3} colorScheme='purple' alignSelf='flex-end' onClick={() => navigate('/')}>
+      <Button size='sm' mt={3} colorScheme='brand' alignSelf='flex-end' onClick={() => navigate('/')}>
         Create New Job
       </Button>
       {coverLetter && coverLetter.length > 0 && (

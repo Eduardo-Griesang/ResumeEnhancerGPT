@@ -48,12 +48,12 @@ export default function ProfilePage({ user }: { user: User }) {
           <Heading size='md'>👋 Hi {userInfo.email || 'There'} </Heading>
           {userInfo.subscriptionStatus === 'past_due' ? (
             <VStack gap={3} py={5} alignItems='center'>
-              <Box color='purple.400'>
+              <Box color='brand.400'>
                 <IoWarningOutline size={30} color='inherit' />
               </Box>
               <Text textAlign='center' fontSize='sm' textColor='text-contrast-lg'>
                 Your subscription is past due. <br /> Please update your payment method{' '}
-                <Link textColor='purple.400' href='https://billing.stripe.com/p/login/5kA7sS0Wc3gD2QM6oo'>
+                <Link textColor='brand.400' href='https://billing.stripe.com/p/login/5kA7sS0Wc3gD2QM6oo'>
                   by clicking here
                 </Link>
               </Text>
@@ -71,7 +71,7 @@ export default function ProfilePage({ user }: { user: User }) {
               )}
               <Text alignSelf='initial' fontSize='sm' fontStyle='italic' textColor='text-contrast-sm'>
                 To manage your subscription, please{' '}
-                <Link textColor='purple.600' href='https://billing.stripe.com/p/login/eVq14p1ke6ly4S77O30sU00'>
+                <Link textColor='brand.600' href='https://billing.stripe.com/p/login/eVq14p1ke6ly4S77O30sU00'>
                   click here.
                 </Link>
               </Text>
@@ -128,7 +128,7 @@ export default function ProfilePage({ user }: { user: User }) {
                       Choose Plan
                     </Button>
                   </VStack>
-                  <VStack layerStyle='cardMd' borderColor={'purple.200'} borderWidth={3} py={5} px={7} gap={3} height='100%' width='100%' justifyContent='space-between' alignItems='center'>
+                  <VStack layerStyle='cardMd' borderColor={'brand.200'} borderWidth={3} py={5} px={7} gap={3} height='100%' width='100%' justifyContent='space-between' alignItems='center'>
                     <VStack gap={3} alignItems='start' width="100%">
                       <Heading size='xl'>Premium</Heading>
                       <HStack gap={2} alignItems='baseline'>
@@ -141,7 +141,7 @@ export default function ProfilePage({ user }: { user: User }) {
                       </Text>
                       <Heading size='md'>Using GPT-4o 🤖</Heading>
                     </VStack>
-                    <Button colorScheme='purple' mr={3} width='100%' isLoading={isGpt4loading} onClick={handleBuy4o}>
+                    <Button colorScheme='brand' mr={3} width='100%' isLoading={isGpt4loading} onClick={handleBuy4o}>
                       Choose Plan
                     </Button>
                   </VStack>

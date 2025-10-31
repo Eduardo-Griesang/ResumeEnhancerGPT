@@ -68,7 +68,7 @@ export default function ResumeModal({ resume, isOpen, onClose }: ModalProps) {
             fileName={`${resume.title.replace(/\s+/g, ' ')}_Resume.pdf`}
           >
             {({ loading }) => (
-              <Button colorScheme="purple" size="sm">
+              <Button colorScheme="brand" size="sm">
                 {loading ? 'Preparing PDF...' : 'Download as PDF'}
               </Button>
             )}

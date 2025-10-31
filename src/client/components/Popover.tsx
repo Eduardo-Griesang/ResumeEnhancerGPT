@@ -131,7 +131,7 @@ export function EditPopover({ setTooltip, selectedText, user, ...props }: EditPo
           <Text fontSize='sm' textAlign='center'>
             Ask GPT to make this part more..
           </Text>
-          <ButtonGroup size='xs' p={1} variant='solid' colorScheme='purple' isAttached>
+          <ButtonGroup size='xs' p={1} variant='solid' colorScheme='brand' isAttached>
             <Button size='xs' color='black' fontSize='xs' onClick={() => handleClick('concise')}>
               Concise
             </Button>

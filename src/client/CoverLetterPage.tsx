@@ -189,7 +189,7 @@ export default function CoverLetterPage() {
                   fileName={coverLetterFileName}
                 >
                   {({ loading }) => (
-                    <Button colorScheme="purple" size="sm">
+                    <Button colorScheme="brand" size="sm">
                       {loading ? 'Preparing PDF...' : 'Download as PDF'}
                     </Button>
                   )}
@@ -240,7 +240,7 @@ export default function CoverLetterPage() {
                   fileName={`${parsedResume?.title.replace(/\s+/g, '_')}_Resume.pdf`}
                 >
                   {({ loading }) => (
-                    <Button colorScheme="purple" size="sm">
+                    <Button colorScheme="brand" size="sm">
                       {loading ? 'Preparing PDF...' : 'Download as PDF'}
                     </Button>
                   )}

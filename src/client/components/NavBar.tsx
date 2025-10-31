@@ -23,8 +23,8 @@ import ThemeSwitch from './ThemeSwitch';
 export default function NavBar() {
   const { data: user } = useAuth();
 
-  const gptTextColor = useColorModeValue('purple.500', 'white');
-  const borderColor = useColorModeValue('purple.300', 'purple.100');
+  const gptTextColor = useColorModeValue('brand.500', 'white');
+  const borderColor = useColorModeValue('brand.300', 'brand.100');
 
   return (
     <HStack

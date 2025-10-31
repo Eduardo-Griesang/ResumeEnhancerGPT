@@ -12,6 +12,19 @@ import {
   Radio as ChakraRadio,
 } from '@chakra-ui/react';
 
+const brandColors = {
+  50: '#e8efee',
+  100: '#c5d8d6',
+  200: '#a2c0bd',
+  300: '#7fa8a4',
+  400: '#5c908c',
+  500: '#16615a',
+  600: '#124e48',
+  700: '#0d3a36',
+  800: '#092724',
+  900: '#041312',
+};
+
 const variantSolid = (props: any) => {
   const { colorScheme: c } = props;
 
@@ -71,7 +84,7 @@ ChakraButton.defaultProps = {
 
 ChakraCheckbox.defaultProps = {
   ...ChakraCheckbox.defaultProps,
-  colorScheme: 'purple',
+  colorScheme: 'brand',
 };
 
 export const Checkbox = {
@@ -131,7 +144,7 @@ export const Input = {
 
 ChakraTextarea.defaultProps = {
   ...ChakraTextarea.defaultProps,
-  focusBorderColor: 'purple.300',
+  focusBorderColor: 'brand.300',
   variant: 'outline',
   sx: {
     '&::-webkit-scrollbar': {
@@ -141,13 +154,13 @@ ChakraTextarea.defaultProps = {
       backgroundColor: 'transparent',
     },
     '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'purple.100',
+      backgroundColor: 'brand.100',
       borderRadius: '20px',
       border: '3px solid transparent',
       backgroundClip: 'content-box',
     },
     '&::-webkit-scrollbar-thumb:hover': {
-      backgroundColor: 'purple.200',
+      backgroundColor: 'brand.200',
     },
   },
 };
@@ -204,7 +217,7 @@ ChakraSelect.defaultProps = {
 
 ChakraRadio.defaultProps = {
   ...ChakraRadio.defaultProps,
-  colorScheme: 'purple',
+  colorScheme: 'brand',
   border: 'md',
   borderColor: 'border-contrast-sm',
 };
@@ -244,6 +257,9 @@ export const styles = {
 };
 
 export const theme = extendTheme({
+  colors: {
+    brand: brandColors,
+  },
   components: {
     Input,
     Textarea,

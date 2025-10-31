@@ -81,8 +81,8 @@ export const semanticTokens = {
       _dark: 'rgba(255, 255, 255, 0.5)',
     },
     active: {
-      default: 'purple.300',
-      _dark: 'purple.300',
+      default: '#16615a',
+      _dark: '#16615a',
     },
   },
   borders: {

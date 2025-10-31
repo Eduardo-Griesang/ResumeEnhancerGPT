@@ -155,7 +155,7 @@ export default function LnPaymentModal({ lightningInvoice, isOpen, onClose }: In
                 height: 256,
               }}
             >
-              <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='purple.500' size='xl' />
+              <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='brand.500' size='xl' />
             </div>
           )}
         </div>
