@@ -24,7 +24,7 @@ export default function NavBar() {
   const { data: user } = useAuth();
 
   const gptTextColor = useColorModeValue('brand.500', 'white');
-  const borderColor = useColorModeValue('brand.300', 'brand.100');
+  const borderColor = useColorModeValue('brand.300', 'brand.300');
 
   return (
     <HStack

@@ -61,12 +61,12 @@ export const semanticTokens = {
       _dark: 'whiteAlpha.900',
     },
     'border-contrast-xs': {
-      default: 'rgba(0, 0, 0, 0.1)',
-      _dark: 'rgba(255, 255, 255, 0.1)',
+      default: 'rgba(0, 0, 0, 0.3)',
+      _dark: 'rgba(255, 255, 255, 0.3)',
     },
     'border-contrast-sm': {
-      default: 'rgba(0, 0, 0, 0.2)',
-      _dark: 'rgba(255, 255, 255, 0.2)',
+      default: 'rgba(0, 0, 0, 0.3)',
+      _dark: 'rgba(255, 255, 255, 0.3)',
     },
     'border-contrast-md': {
       default: 'rgba(0, 0, 0, 0.3)',
