@@ -179,7 +179,7 @@ export default function CoverLetterPage() {
                   onClick={handleClick}
                   isLoading={editIsLoading}
                   loadingText='Saving...'
-                  colorScheme='blue'
+                  colorScheme='#16615a'
                   size="sm"
                 >
                   Save Changes
@@ -230,7 +230,7 @@ export default function CoverLetterPage() {
                   onClick={handleSaveResume}
                   isLoading={editIsLoadingResume}
                   loadingText='Saving...'
-                  colorScheme='blue'
+                  colorScheme='#16615a'
                   size="sm"
                 >
                   Save Changes

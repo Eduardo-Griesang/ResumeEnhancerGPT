@@ -339,7 +339,6 @@ export const generateCoverLetter: GenerateCoverLetter<CoverLetterPayload, CoverL
     if (!context.user.hasPaid && !context.user.credits && !context.user.isUsingLn) {
       throw new HttpError(402, 'User has not paid or is out of credits');
     } else if (context.user.credits && !context.user.hasPaid) {
-      console.log('decrementing credits \n\n');
       await context.entities.User.update({
         where: { id: context.user.id },
         data: {
@@ -421,7 +420,6 @@ export const generateEdit: GenerateEdit<
     if (!context.user.hasPaid && !context.user.credits && !context.user.isUsingLn) {
       throw new HttpError(402, 'User has not paid or is out of credits');
     } else if (context.user.credits && !context.user.hasPaid) {
-      console.log('decrementing credits \n\n');
       await context.entities.User.update({
         where: { id: context.user.id },
         data: {
@@ -465,15 +463,22 @@ export const generateEdit: GenerateEdit<
 
 export type JobPayload = Pick<Job, 'title' | 'company' | 'location' | 'description'>;
 
-export const createJob: CreateJob<JobPayload, Job> = ({ title, company, location, description }, context) => {
+export const createJob: CreateJob<JobPayload, Job> = (
+  { title, company, location, description },
+  context
+) => {
   if (!context.user) {
     throw new HttpError(401);
+  }
+
+  if (!description || !description.trim()) {
+    throw new HttpError(400, 'Please provide a job description');
   }
 
   return context.entities.Job.create({
     data: {
       title,
-      description,
+      description: description.trim(),
       location,
       company,
       user: { connect: { id: context.user.id } },
@@ -816,6 +821,3 @@ export const stripeCreditsPayment: StripeCreditsPayment<void, StripePaymentResul
     }
   });
 };
-
-
-

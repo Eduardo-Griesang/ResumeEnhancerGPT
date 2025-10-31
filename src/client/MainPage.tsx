@@ -39,6 +39,7 @@ import {
   useColorModeValue,
   Stack,
   Divider,
+  Switch,
 } from '@chakra-ui/react';
 import BorderBox from './components/BorderBox';
 import { LeaveATip, LoginToBegin } from './components/AlertDialog';
@@ -61,6 +62,9 @@ function MainPage() {
   const [sliderValue, setSliderValue] = useState(30);
   const [showTooltip, setShowTooltip] = useState(false);
   const [lightningInvoice, setLightningInvoice] = useState<LightningInvoice | null>(null);
+  const [isJobDescriptionPdfMode, setIsJobDescriptionPdfMode] = useState<boolean>(false);
+  const [jobDescriptionPdfName, setJobDescriptionPdfName] = useState<string | null>(null);
+  const [isJobDescriptionPdfReady, setIsJobDescriptionPdfReady] = useState<boolean>(false);
 
   const { data: user } = useAuth();
 
@@ -95,6 +99,7 @@ function MainPage() {
   let setLoadingTextTimeout: ReturnType<typeof setTimeout>;
   const loadingTextRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const jobDescriptionFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (jobIdParam) {
@@ -115,6 +120,14 @@ function MainPage() {
   useEffect(() => {
     resetJob();
   }, [job]);
+
+  useEffect(() => {
+    if (isCoverLetterUpdate) {
+      setIsJobDescriptionPdfMode(false);
+      setIsJobDescriptionPdfReady(false);
+      setJobDescriptionPdfName(null);
+    }
+  }, [isCoverLetterUpdate]);
 
   function resetJob() {
     if (job) {
@@ -182,6 +195,94 @@ function MainPage() {
     } catch (error) {
       alert('An Error occured uploading your PDF. Please try again.');
     }
+  }
+
+  function handleJobDescriptionModeToggle(event: ChangeEvent<HTMLInputElement>) {
+    const shouldUsePdf = event.target.checked;
+    setIsJobDescriptionPdfMode(shouldUsePdf);
+    setIsJobDescriptionPdfReady(false);
+    setJobDescriptionPdfName(null);
+    if (jobDescriptionFileInputRef.current) {
+      jobDescriptionFileInputRef.current.value = '';
+    }
+    if (shouldUsePdf) {
+      setValue('description', '', { shouldValidate: true });
+    }
+    clearErrors('description');
+  }
+
+  function handleJobDescriptionFileButtonClick() {
+    jobDescriptionFileInputRef.current?.click();
+  }
+
+  function onJobDescriptionPdfUpload(event: ChangeEvent<HTMLInputElement>) {
+    if (!event.target.files || event.target.files.length === 0) {
+      return;
+    }
+    const file = event.target.files[0];
+    setIsJobDescriptionPdfReady(false);
+    setJobDescriptionPdfName(file.name);
+
+    const fileReader = new FileReader();
+
+    fileReader.onload = function () {
+      if (this.result == null || !(this.result instanceof ArrayBuffer)) {
+        alert('An Error occured uploading your Job Description PDF. Please try again.');
+        setIsJobDescriptionPdfReady(false);
+        setJobDescriptionPdfName(null);
+        return;
+      }
+      const typedarray = new Uint8Array(this.result);
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
+      const loadingTask = pdfjsLib.getDocument(typedarray);
+      let textBuilder: string = '';
+      loadingTask.promise
+        .then(async (pdf) => {
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            const text = content.items
+              .map((item: any) => {
+                if (item.str) {
+                  return item.str;
+                }
+                return '';
+              })
+              .join(' ');
+            textBuilder += text;
+          }
+          const trimmedText = textBuilder.trim();
+          if (!trimmedText) {
+            throw new Error('Parsed job description was empty.');
+          }
+          setValue('description', trimmedText, { shouldValidate: true });
+          clearErrors('description');
+          setIsJobDescriptionPdfReady(true);
+        })
+        .catch((err) => {
+          console.error(err);
+          alert('An Error occured uploading your Job Description PDF. Please try again.');
+          setValue('description', '', { shouldValidate: true });
+          setIsJobDescriptionPdfReady(false);
+          setJobDescriptionPdfName(null);
+        });
+    };
+
+    fileReader.onerror = () => {
+      alert('An Error occured uploading your Job Description PDF. Please try again.');
+      setIsJobDescriptionPdfReady(false);
+      setJobDescriptionPdfName(null);
+    };
+
+    try {
+      fileReader.readAsArrayBuffer(file);
+    } catch (error) {
+      alert('An Error occured uploading your Job Description PDF. Please try again.');
+      setIsJobDescriptionPdfReady(false);
+      setJobDescriptionPdfName(null);
+    }
+    event.target.value = '';
   }
 
   async function checkIfLnAndPay(user: Omit<User, 'password'>): Promise<LnPayment | null> {
@@ -474,19 +575,83 @@ function MainPage() {
                 />
                 <FormErrorMessage>{!!formErrors.location && formErrors.location.message?.toString()}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={!!formErrors.description}>
+              <FormControl
+                isInvalid={!!formErrors.description}
+                display={isJobDescriptionPdfMode ? 'none' : 'block'}
+              >
                 <Textarea
                   id='description'
                   borderRadius={0}
                   placeholder='copy & paste the job description in any language'
                   {...register('description', {
-                    required: 'This is required',
+                    validate: (value) => {
+                      const descriptionValue = typeof value === 'string' ? value : '';
+                      return descriptionValue.trim().length > 0 ? true : 'Please provide a job description';
+                    },
                   })}
+                  disabled={isCoverLetterUpdate || isJobDescriptionPdfMode}
                 />
                 <FormErrorMessage>
                   {!!formErrors.description && formErrors.description.message?.toString()}
                 </FormErrorMessage>
               </FormControl>
+              {isJobDescriptionPdfMode && (
+                <FormControl isInvalid={!!formErrors.description}>
+                  <Input
+                    id='jobDescriptionPdfInput'
+                    type='file'
+                    accept='application/pdf'
+                    placeholder='job-description-pdf'
+                    onChange={onJobDescriptionPdfUpload}
+                    display='none'
+                    ref={jobDescriptionFileInputRef}
+                    disabled={isCoverLetterUpdate}
+                  />
+                  <VStack
+                    border={!!formErrors.description ? '1px solid #FC8181' : 'sm'}
+                    boxShadow={!!formErrors.description ? '0 0 0 1px #FC8181' : 'none'}
+                    bg='bg-contrast-xs'
+                    p={3}
+                    alignItems='flex-start'
+                    _hover={{
+                      bg: 'bg-contrast-sm',
+                      borderColor: 'border-contrast-md',
+                    }}
+                    transition={
+                      'transform 0.05s ease-in, transform 0.05s ease-out, background 0.3s, opacity 0.3s, border 0.3s'
+                    }
+                  >
+                    <HStack width='full' justify='space-between' align='center'>
+                      <FormLabel textAlign='center' htmlFor='jobDescriptionPdfInput' mb={0}>
+                        <Button
+                          size='sm'
+                          colorScheme='contrast'
+                          onClick={handleJobDescriptionFileButtonClick}
+                          isDisabled={isCoverLetterUpdate}
+                        >
+                          Upload Job Description
+                        </Button>
+                      </FormLabel>
+                      {jobDescriptionPdfName ? (
+                        <Text fontSize='sm'>
+                          {jobDescriptionPdfName}
+                          {isJobDescriptionPdfReady ? ' • Uploaded!' : ' • Processing...'}
+                        </Text>
+                      ) : (
+                        <Text fontSize='sm' color='text-contrast-md'>
+                          No file selected
+                        </Text>
+                      )}
+                    </HStack>
+                    <FormHelperText mt={0.5} fontSize='xs'>
+                      Upload a PDF of the job description to extract the text automatically.
+                    </FormHelperText>
+                  </VStack>
+                  <FormErrorMessage>
+                    {!!formErrors.description && formErrors.description.message?.toString()}
+                  </FormErrorMessage>
+                </FormControl>
+              )}
               <FormControl isInvalid={!!formErrors.pdf}>
                 <Input
                   id='pdf'
@@ -516,19 +681,39 @@ function MainPage() {
                     'transform 0.05s ease-in, transform 0.05s ease-out, background 0.3s, opacity 0.3s, border 0.3s'
                   }
                 >
-                  <HStack>
-                    <FormLabel textAlign='center' htmlFor='pdf'>
-                      <Button size='sm' colorScheme='contrast' onClick={handleFileButtonClick}>
-                        Upload CV
-                      </Button>
-                    </FormLabel>
-                    {isPdfReady && <Text fontSize={'sm'}>Uploaded!</Text>}
-                    <FormErrorMessage>{!!formErrors.pdf && formErrors.pdf.message?.toString()}</FormErrorMessage>
+                  <HStack width='full' align='center' justify='space-between'>
+                    <HStack>
+                      <FormLabel textAlign='center' htmlFor='pdf' mb={0}>
+                        <Button size='sm' colorScheme='contrast' onClick={handleFileButtonClick}>
+                          Upload CV
+                        </Button>
+                      </FormLabel>
+                      {isPdfReady && <Text fontSize='sm'>Uploaded!</Text>}
+                    </HStack>
+                    {!isCoverLetterUpdate && (
+                      <HStack>
+                        <FormLabel
+                          htmlFor='job-description-mode-switch'
+                          mb={0}
+                          fontSize='sm'
+                          color='text-contrast-md'
+                        >
+                          Upload job description PDF
+                        </FormLabel>
+                        <Switch
+                          id='job-description-mode-switch'
+                          colorScheme='brand'
+                          isChecked={isJobDescriptionPdfMode}
+                          onChange={handleJobDescriptionModeToggle}
+                        />
+                      </HStack>
+                    )}
                   </HStack>
                   <FormHelperText mt={0.5} fontSize={'xs'}>
                     Upload a PDF only of Your CV/Resumé
                   </FormHelperText>
                 </VStack>
+                <FormErrorMessage>{!!formErrors.pdf && formErrors.pdf.message?.toString()}</FormErrorMessage>
               </FormControl>
               {(user?.gptModel === 'gpt-4' || user?.gptModel === 'gpt-4o') && (
                 <FormControl>
